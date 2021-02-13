@@ -8,16 +8,15 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ImageView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_goal"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:clickable="true"
-        android:onClick="createPopup"
-        android:src="@drawable/add_goal"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/goal_grey"
+        android:src="@drawable/add_icon"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -25,6 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_goal" />
 
     <Button

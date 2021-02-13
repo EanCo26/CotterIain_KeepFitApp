@@ -10,20 +10,16 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import me.uos.cotteriain_keepfitapp.database.GoalEntry;
 
 public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
 
-    private List<GoalItem> goalList;
+    private List<GoalEntry> goalList;
     final private GoalClickListener goalClickListener;
 
-    public GoalAdapter(List<GoalItem> goalList, GoalClickListener goalClickListener) {
+    public GoalAdapter(List<GoalEntry> goalList, GoalClickListener goalClickListener) {
         this.goalList = goalList;
         this.goalClickListener = goalClickListener;
-    }
-
-    public GoalAdapter(List<GoalItem> goalList) {
-        this.goalList = goalList;
-        goalClickListener = null;
     }
 
     @NonNull

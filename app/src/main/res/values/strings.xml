@@ -3,4 +3,7 @@
     <string name="activity">Activity</string>
     <string name="history">History</string>
     <string name="settings">Settings</string>
+    <string name="pref_file_key">me.uos.cotteriain_keepfitapp.TrialKey</string>
+    <string name="current_activity">me.uos.cotteriain_keepfitapp.CurrentActivityIndex</string>
+    <string name="activity_date">me.uos.cotteriain_keepfitapp.ActivityDate</string>
 </resources>

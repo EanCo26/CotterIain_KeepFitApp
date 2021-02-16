@@ -6,10 +6,11 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,7 +18,7 @@
         android:text="Create Goal"/>
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/text"
         android:layout_width="96dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -36,11 +37,11 @@
         android:hint="Enter Name..."
         android:backgroundTint="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/name"
+        app:layout_constraintStart_toEndOf="@+id/text"
         app:layout_constraintTop_toBottomOf="@id/title"/>
 
     <TextView
-        android:id="@+id/steps"
+        android:id="@+id/text2"
         android:layout_width="96dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -60,7 +61,7 @@
         android:backgroundTint="@color/red"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/steps"
+        app:layout_constraintStart_toEndOf="@id/text2"
         app:layout_constraintTop_toBottomOf="@id/create_name" />
 
 

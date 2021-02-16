@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="Activity">
+            android:label="Keep Fit">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,9 +20,9 @@
         </activity>
         <activity
             android:name=".HistoryActivity"
-            android:label="History"></activity>
+            android:label="Keep Fit"></activity>
         <activity android:name=".SettingsActivity"
-            android:label="Settings"></activity>
+            android:label="Keep Fit"></activity>
     </application>
 
 </manifest>

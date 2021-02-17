@@ -24,6 +24,7 @@ public class GoalEntry {
         this.steps = steps;
     }
 
+
     public int getId() { return id; }
     public String getName() { return name; }
     public int getSteps() { return steps; }

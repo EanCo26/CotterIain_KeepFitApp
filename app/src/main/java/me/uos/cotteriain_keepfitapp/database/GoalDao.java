@@ -2,6 +2,7 @@ package me.uos.cotteriain_keepfitapp.database;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -12,9 +13,8 @@ import androidx.room.Update;
 @Dao
 public interface GoalDao {
 
-    //todo(1) Change DAO to use LiveData
     @Query("SELECT * FROM goal")
-    List<GoalEntry> loadAllGoals();
+    LiveData<List<GoalEntry>> loadAllGoals();
 
     @Insert
     void createGoal(GoalEntry goalEntry);
@@ -26,5 +26,8 @@ public interface GoalDao {
     void deleteGoal(GoalEntry goalEntry);
 
     @Query("SELECT * FROM goal WHERE id = :id")
-    GoalEntry loadGoalById(int id);
+    LiveData<GoalEntry> loadGoalById(int id);
+
+    @Query("DELETE FROM goal")
+    void clearGoalTable();
 }

@@ -18,8 +18,7 @@ public abstract class GoalDatabase extends RoomDatabase {
     public static GoalDatabase getsInstance(Context context) {
         if(sInstance == null){
             synchronized (LOCK){
-                //todo(2) remove .allowMainThreadQueries to have it run on seperate thread after LiveData introduced
-                sInstance = Room.databaseBuilder(context.getApplicationContext(), GoalDatabase.class, GoalDatabase.DB_NAME).allowMainThreadQueries().build();
+                sInstance = Room.databaseBuilder(context.getApplicationContext(), GoalDatabase.class, GoalDatabase.DB_NAME).build();
             }
         }
         return sInstance;

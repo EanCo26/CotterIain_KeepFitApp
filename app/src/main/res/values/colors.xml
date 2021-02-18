@@ -10,6 +10,7 @@
     <color name="red">#C30000</color>
     <color name="dark_red">#970000</color>
     <color name="background_grey">#646464</color>
+    <color name="background">#1C1C1C</color>
     <color name="goal_grey">#878787</color>
     <color name="border_empty">#CCCCCC</color>
     <color name="goal">#FF9800</color>

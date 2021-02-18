@@ -25,7 +25,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:clickable="true"
-        android:src="@drawable/pencil_icon" />
+        android:src="@drawable/pencil_icon"
+        android:background="?selectableItemBackground"/>
 
     <TextView
         android:id="@+id/textView"

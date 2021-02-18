@@ -13,13 +13,13 @@ import me.uos.cotteriain_keepfitapp.database.GoalEntry;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -35,11 +35,11 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     private GoalDatabase goalDatabase;
     private GoalAdapter goalAdapter;
     final private GoalAdapter.GoalClickListener gCL = this;
-    private GoalEntry goalEntry;
 
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
 
+    private ImageView activity, history, settings;
     private FloatingActionButton floatingActionButton;
 
     private TextView goalText;
@@ -52,24 +52,12 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         assignActivityElements();
 
         sharedData = new SharedData(this.getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE));
-        int id = sharedData.getData(getString(R.string.current_activity), Integer.MAX_VALUE);
-
-
         goalDatabase = GoalDatabase.getsInstance(getApplicationContext());
-        MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                goalAdapter = new GoalAdapter(goalDatabase.goalDao().loadAllGoals(), gCL, id);
-//                finish();
-            }
-        });
 
+        goalAdapter = new GoalAdapter(gCL);
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.swapAdapter(goalAdapter, true);
-
-        goalText.setText(goalEntry != null?Integer.toString(goalEntry.getSteps()):"50");
 
         viewModelSetup();
     }
@@ -94,9 +82,22 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         viewModel.getGoalList().observe(this, new Observer<List<GoalEntry>>() {
             @Override
             public void onChanged(List<GoalEntry> goalEntryList) {
-                goalAdapter.setGoalList(goalEntryList);
+                int id = sharedData.getData(getString(R.string.current_activity), Integer.MAX_VALUE);
+                goalAdapter.setGoalList(goalEntryList, id);
+                recyclerView.swapAdapter(goalAdapter, true);
+
+                for (GoalEntry goal:goalEntryList){
+                    if(goal.getId() == id){
+                        setActiveGoalUI(goal);
+                        return;
+                    }
+                }
             }
         });
+    }
+
+    public void setActiveGoalUI(GoalEntry goal){
+        goalText.setText(Integer.toString(goal.getSteps()));
     }
 
     private void createPopup(){
@@ -125,8 +126,6 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                             public void run() {
                                 goalDatabase.goalDao().createGoal(new GoalEntry(name_field.getText().toString(),
                                                 Integer.parseInt(steps_field.getText().toString())));
-
-//                                finish();
                             }
                         });
 
@@ -136,21 +135,19 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         });
     }
 
-    private void editPopup(int itemIndex){
+    private void editPopup(int itemIndex, GoalEntry goal){
         View popupLayout = getLayoutInflater().inflate(R.layout.edit_popup, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setView(popupLayout);
         PopupWindow popupWindow = new PopupWindow(dialogBuilder, dialogBuilder.create());
         popupWindow.showWindow();
 
-        GoalEntry editGoalEntry = goalAdapter.getGoalEntryAt(itemIndex);
-        String name = editGoalEntry.getName();
-        String steps = Integer.toString(editGoalEntry.getSteps());
-
         EditText name_field = (EditText) popupLayout.findViewById(R.id.edit_name);
-        name_field.setText(name);
+        name_field.setText(goal.getName());
+
         EditText steps_field = (EditText) popupLayout.findViewById(R.id.edit_steps);
-        steps_field.setText(steps);
+        steps_field.setText(Integer.toString(goal.getSteps()));
+
         Button popup_button = (Button) popupLayout.findViewById(R.id.edit_button);
         popup_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,13 +161,12 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                 }
 
                 if(hasName&&hasSteps) {
-                    editGoalEntry.setName(name_field.getText().toString());
-                    editGoalEntry.setSteps(Integer.parseInt(steps_field.getText().toString()));
+                    goal.setName(name_field.getText().toString());
+                    goal.setSteps(Integer.parseInt(steps_field.getText().toString()));
                     MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
                         @Override
                         public void run() {
-                            goalDatabase.goalDao().editGoal(editGoalEntry);
-//                            finish();
+                            goalDatabase.goalDao().editGoal(goal);
                         }
                     });
                     popupWindow.closeWindow();
@@ -186,7 +182,6 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                     @Override
                     public void run() {
                         goalDatabase.goalDao().deleteGoal(goalAdapter.getGoalEntryAt(itemIndex));
-//                        finish();
                     }
                 });
                 popupWindow.closeWindow();
@@ -194,43 +189,34 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int itemID = item.getItemId();
+    public void changeActivity(View view){
         Intent intent = null;
         int inAnim = android.R.anim.slide_in_left;
         int outAnim = android.R.anim.slide_out_right;
-        switch (itemID){
-            case R.id.history:
+        switch(view.getId()){
+            case R.id.navi_history:
                 intent = new Intent(this, HistoryActivity.class);
                 break;
-            case R.id.settings:
+            case R.id.navi_settings:
                 intent = new Intent(this, SettingsActivity.class);
                 break;
         }
-
         if(intent != null) {
             startActivity(intent);
             overridePendingTransition(inAnim, outAnim);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onGoalClick(int itemIndex){
-        int id = goalAdapter.getGoalEntryAt(itemIndex).getId();
+    public void onGoalClick(int itemIndex, GoalEntry goal){
+        int id = goal.getId();
         sharedData.setData(getString(R.string.current_activity), id);
         goalAdapter.selectGoal(itemIndex);
+        setActiveGoalUI(goal);
     }
 
     @Override
-    public void onEditClick(int itemIndex) {
-        editPopup(itemIndex);
+    public void onEditClick(int itemIndex, GoalEntry goal) {
+        editPopup(itemIndex, goal);
     }
 }

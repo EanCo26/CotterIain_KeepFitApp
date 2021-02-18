@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -11,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class HistoryActivity extends AppCompatActivity {
+
+    private ImageView activity, history, settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,24 +58,15 @@ public class HistoryActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int itemID = item.getItemId();
+    public void changeActivity(View view){
         Intent intent = null;
         int inAnim = android.R.anim.slide_in_left;
         int outAnim = android.R.anim.slide_out_right;
-
-        switch (itemID){
-            case R.id.activity:
+        switch(view.getId()){
+            case R.id.navi_activity:
                 intent = new Intent(this, MainActivity.class);
                 break;
-            case R.id.settings:
+            case R.id.navi_settings:
                 intent = new Intent(this, SettingsActivity.class);
                 break;
         }
@@ -79,6 +74,5 @@ public class HistoryActivity extends AppCompatActivity {
             startActivity(intent);
             overridePendingTransition(inAnim, outAnim);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

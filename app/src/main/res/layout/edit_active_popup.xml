@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="24sp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Goal Name"/>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        android:text="Current Steps:"/>
+
+    <TextView
+        android:id="@+id/steps_no"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text"
+        app:layout_constraintTop_toTopOf="@id/text"
+        app:layout_constraintBottom_toBottomOf="@id/text"
+        android:text="00000"/>
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/add_steps"
+        app:layout_constraintBottom_toBottomOf="@id/add_steps"
+        android:text="Steps to Add:"/>
+
+    <EditText
+        android:id="@+id/add_steps"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/red"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text2"
+        app:layout_constraintTop_toBottomOf="@id/steps_no"
+        android:hint="Number of Steps to Add..." />
+
+    <Button
+        android:id="@+id/create_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/add_steps"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:backgroundTint="@color/red"
+        android:textColor="@color/white"
+        android:text="Add Steps"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

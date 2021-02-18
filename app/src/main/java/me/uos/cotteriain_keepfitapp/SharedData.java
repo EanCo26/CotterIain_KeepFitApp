@@ -13,10 +13,21 @@ public class SharedData {
 
     public int getData(String key, int defaultValue){ return sharedPref.getInt(key, defaultValue); }
     public String getData(String key, String defaultValue){ return sharedPref.getString(key, defaultValue); }
+    public Boolean getData(String key, boolean defaultValue){ return sharedPref.getBoolean(key, defaultValue); }
 
     public void setData(String key, int value){
         editor = sharedPref.edit();
         editor.putInt(key, value);
+        editor.apply();
+    }
+    public void setData(String key, String value){
+        editor = sharedPref.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+    public void setData(String key, boolean value){
+        editor = sharedPref.edit();
+        editor.putBoolean(key, value);
         editor.apply();
     }
 }

@@ -32,7 +32,7 @@
         android:id="@+id/counter_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recycle_view"
@@ -42,24 +42,21 @@
 
     <TextView
         android:id="@+id/header"
-        style="@style/Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        style="@style/Text"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/counter_button"
-        tools:text="Steps - 65%" />
+        android:text="[GOAL NAME] - [GOAL]%" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/progress"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="300dp"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/navi_history"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header">
 
@@ -68,21 +65,22 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/circle"
+            app:layout_constraintBottom_toBottomOf="@+id/progress"
             app:layout_constraintEnd_toEndOf="@id/goal_number"
             app:layout_constraintStart_toStartOf="@id/goal_number"
-            app:layout_constraintTop_toTopOf="@+id/circle" />
+            app:layout_constraintTop_toTopOf="@+id/progress" />
 
         <ProgressBar
-            android:id="@+id/circle"
+            android:id="@+id/progress"
             android:layout_width="360dp"
             android:layout_height="match_parent"
             android:indeterminateOnly="false"
             android:max="100"
+            android:clickable="true"
             android:progressDrawable="@drawable/progress_circle"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/progress"
-            app:layout_constraintStart_toStartOf="@+id/progress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
             tools:progress="65" />
@@ -110,49 +108,54 @@
             android:text="0"
             android:textAlignment="center"
             android:textSize="40sp"
-            app:layout_constraintEnd_toEndOf="@+id/circle"
-            app:layout_constraintStart_toStartOf="@+id/circle"
+            app:layout_constraintEnd_toEndOf="@+id/progress"
+            app:layout_constraintStart_toStartOf="@+id/progress"
             app:layout_constraintTop_toBottomOf="@+id/divider"
             tools:text="1000" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
-        android:id="@+id/navi_activity"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/navigation_bar"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/background"
-        android:padding="8dp"
-        android:src="@drawable/activity_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/navi_history"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/navi_history"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:padding="8dp"
-        android:src="@drawable/history_icon"
         android:background="@color/red"
-        android:clickable="true"
-        android:onClick="changeActivity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <ImageView
-        android:id="@+id/navi_settings"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:background="@color/red"
-        android:clickable="true"
-        android:onClick="changeActivity"
-        android:padding="8dp"
-        android:src="@drawable/setting_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/navi_history" />
+        <ImageView
+            android:id="@+id/navi_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:background="@color/background"
+            android:padding="8dp"
+            android:src="@drawable/activity_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/navi_history"
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <ImageView
+            android:id="@+id/navi_history"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:padding="8dp"
+            android:src="@drawable/history_icon"
+            android:clickable="true"
+            android:onClick="changeActivity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <ImageView
+            android:id="@+id/navi_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:padding="8dp"
+            android:src="@drawable/setting_icon"
+            android:clickable="true"
+            android:onClick="changeActivity"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/navi_history" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

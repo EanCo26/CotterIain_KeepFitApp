@@ -94,11 +94,12 @@
             android:src="@drawable/info_icon" />
 
         <TextView
+            android:id="@+id/helper_text"
             style="@style/Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:text="Set Goals to Non-editable in Settings"
+            android:text="Make goals to non-editable in Settings"
             android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="12sp" />
@@ -112,6 +113,7 @@
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:textSize="18sp"
+        android:textColor="@color/light_activity"
         android:background="?selectableItemBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

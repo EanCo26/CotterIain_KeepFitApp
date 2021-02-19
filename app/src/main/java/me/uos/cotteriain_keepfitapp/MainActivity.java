@@ -6,6 +6,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import me.uos.cotteriain_keepfitapp.GoalSettings.GoalAdapter;
+import me.uos.cotteriain_keepfitapp.GoalSettings.GoalViewModel;
 import me.uos.cotteriain_keepfitapp.database.GoalDatabase;
 import me.uos.cotteriain_keepfitapp.database.GoalEntry;
 
@@ -46,8 +48,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     private TextView goalText, headerText, stepsText;
     private ProgressBar progressBar;
 
-    String currentDate;
-    String oldDate;
+    private String currentDate;
+    private String oldDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

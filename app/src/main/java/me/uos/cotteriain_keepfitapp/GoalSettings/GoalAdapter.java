@@ -1,4 +1,4 @@
-package me.uos.cotteriain_keepfitapp;
+package me.uos.cotteriain_keepfitapp.GoalSettings;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +11,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import me.uos.cotteriain_keepfitapp.R;
 import me.uos.cotteriain_keepfitapp.database.GoalEntry;
 
 public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {

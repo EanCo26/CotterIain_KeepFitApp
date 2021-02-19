@@ -6,20 +6,48 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import me.uos.cotteriain_keepfitapp.HistorySettings.HistoryAdapter;
 
 public class HistoryActivity extends AppCompatActivity {
 
     private ImageView activity, history, settings;
+    private RecyclerView historyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        historyView = (RecyclerView)findViewById(R.id.history_list);
+        historyView.setLayoutManager(layoutManager);
+
+        List<String> tempList = new ArrayList<>();
+        tempList.add("Hello");
+        tempList.add("Hello");
+        tempList.add("Hello");
+        tempList.add("Hello");
+        tempList.add("Hello");
+        tempList.add("Hello");
+        tempList.add("Hello");
+        tempList.add("Hello");
+        tempList.add("Hello");
+        tempList.add("Hello");
+
+        HistoryAdapter adapter = new HistoryAdapter(tempList);
+        historyView.setAdapter(adapter);
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.tabs);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

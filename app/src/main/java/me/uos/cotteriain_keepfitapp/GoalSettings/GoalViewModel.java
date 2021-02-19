@@ -1,4 +1,4 @@
-package me.uos.cotteriain_keepfitapp;
+package me.uos.cotteriain_keepfitapp.GoalSettings;
 
 import android.app.Application;
 

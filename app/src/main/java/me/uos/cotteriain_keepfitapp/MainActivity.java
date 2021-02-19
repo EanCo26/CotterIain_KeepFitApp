@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
 
-    private GoalEntry activeGoal;
+    private GoalEntry activeGoal = null;
     private int goalSteps = 0;
     private int steps = 0;
 
@@ -154,6 +154,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         PopupWindow popupWindow = new PopupWindow(dialogBuilder, dialogBuilder.create());
         popupWindow.showWindow();
 
+        TextView title = (TextView) popupLayout.findViewById(R.id.title);
+        if(activeGoal != null) { title.setText(activeGoal.getName()); }
         EditText add_field = (EditText) popupLayout.findViewById(R.id.add_steps);
         Button popup_button = (Button) popupLayout.findViewById(R.id.add_button);
         popup_button.setOnClickListener(new View.OnClickListener() {
@@ -275,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                 });
                 if(goal.getId() == activeGoal.getId()){
                     Log.d(TAG, "run: Active Goal Deleted");
+                    activeGoal = null;
                     resetDisplay();
                 }
                 popupWindow.closeWindow();

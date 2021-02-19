@@ -1,16 +1,10 @@
 package me.uos.cotteriain_keepfitapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -36,12 +30,12 @@ public class SettingsActivity extends AppCompatActivity {
         sharedData = new SharedData(this.getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE));
         goalSetting = (Switch)findViewById(R.id.goals_setting);
 
-        isGoalsEditable = sharedData.getData(getString(R.string.setting_goals_editable), goalSetting.isChecked());
+        isGoalsEditable = sharedData.getBool(getString(R.string.setting_goals_editable), goalSetting.isChecked());
         goalSetting.setChecked(isGoalsEditable);
         goalSetting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                sharedData.setData(getString(R.string.setting_goals_editable), isChecked);
+                sharedData.setBool(getString(R.string.setting_goals_editable), isChecked);
             }
         });
     }

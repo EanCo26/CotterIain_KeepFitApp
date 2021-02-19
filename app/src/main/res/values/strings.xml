@@ -6,5 +6,6 @@
     <string name="pref_file_key">me.uos.cotteriain_keepfitapp.TrialKey</string>
     <string name="current_activity">me.uos.cotteriain_keepfitapp.CurrentActivityIndex</string>
     <string name="activity_date">me.uos.cotteriain_keepfitapp.ActivityDate</string>
+    <string name="current_steps">me.uos.cotteriain_keepfitapp.CurrentSteps</string>
     <string name="setting_goals_editable">me.uos.cotteriain_keepfitapp.GoalsEditable</string>
 </resources>

@@ -17,28 +17,6 @@
         android:text="Goal Name"/>
 
     <TextView
-        android:id="@+id/text"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        android:text="Current Steps:"/>
-
-    <TextView
-        android:id="@+id/steps_no"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/text"
-        app:layout_constraintTop_toTopOf="@id/text"
-        app:layout_constraintBottom_toBottomOf="@id/text"
-        android:text="00000"/>
-
-    <TextView
         android:id="@+id/text2"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
@@ -59,11 +37,11 @@
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/text2"
-        app:layout_constraintTop_toBottomOf="@id/steps_no"
-        android:hint="Number of Steps to Add..." />
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:hint="Steps to Add..." />
 
     <Button
-        android:id="@+id/create_button"
+        android:id="@+id/add_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

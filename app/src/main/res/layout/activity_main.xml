@@ -43,7 +43,7 @@
     <TextView
         android:id="@+id/header"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:layout_margin="16dp"
         style="@style/Text"
         android:textAlignment="center"
@@ -51,11 +51,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/counter_button"
-        android:text="[GOAL NAME] - [GOAL]%" />
+        tools:text="[GOAL NAME] - [GOAL]%" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="316dp"
         android:layout_marginBottom="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header">
@@ -112,6 +112,31 @@
             app:layout_constraintStart_toStartOf="@+id/progress"
             app:layout_constraintTop_toBottomOf="@+id/divider"
             tools:text="1000" />
+
+        <LinearLayout
+            android:id="@+id/editable_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/progress"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/white_info_icon" />
+
+            <TextView
+                android:id="@+id/helper_text"
+                style="@style/Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="Click on progression bar to add steps"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

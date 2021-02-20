@@ -41,10 +41,6 @@ public class HistoryActivity extends AppCompatActivity {
         tempList.add("Hello");
         tempList.add("Hello");
         tempList.add("Hello");
-        tempList.add("Hello");
-        tempList.add("Hello");
-        tempList.add("Hello");
-        tempList.add("Hello");
 
         HistoryAdapter adapter = new HistoryAdapter(tempList);
         historyView.setAdapter(adapter);

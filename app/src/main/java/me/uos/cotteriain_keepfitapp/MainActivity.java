@@ -63,12 +63,10 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
 
         Date calendar = Calendar.getInstance().getTime();
         currentDate = new SimpleDateFormat("dd/MM/yyyy").format(calendar);
-
         oldDate = sharedData.getString(getString(R.string.activity_date), "no_date");
 
         if(!currentDate.equals(oldDate)){
             clearPreviousDayData();
-            Log.d(TAG, "onCreate: dates did not match");
         }
 
         goalAdapter = new GoalAdapter(gCL);
@@ -164,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                 steps = sharedData.getInt(getString(R.string.current_steps), 0);
                 if(!add_field.getText().toString().isEmpty()) {
                     if(!currentDate.equals(oldDate)){
-                        Log.d(TAG, "onClick: date changed");
                         sharedData.setString(getString(R.string.activity_date), currentDate);
                     }
                     steps += Integer.parseInt(add_field.getText().toString());
@@ -276,7 +273,6 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                     }
                 });
                 if(goal.getId() == activeGoal.getId()){
-                    Log.d(TAG, "run: Active Goal Deleted");
                     activeGoal = null;
                     resetDisplay();
                 }
@@ -305,9 +301,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
 
     @Override
     public void onGoalClick(int itemIndex, GoalEntry goal){
-
         if(!currentDate.equals(oldDate)){
-            Log.d(TAG, "onGoalClick: date changed");
             sharedData.setString(getString(R.string.activity_date), currentDate);
         }
 

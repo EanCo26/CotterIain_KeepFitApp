@@ -11,7 +11,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="Keep Fit">
+            android:label="Keep Fit"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,9 +21,11 @@
         </activity>
         <activity
             android:name=".HistoryActivity"
-            android:label="Keep Fit"></activity>
+            android:label="Keep Fit"
+            android:windowSoftInputMode="adjustNothing"></activity>
         <activity android:name=".SettingsActivity"
-            android:label="Keep Fit"></activity>
+            android:label="Keep Fit"
+            android:windowSoftInputMode="adjustNothing"></activity>
     </application>
 
 </manifest>

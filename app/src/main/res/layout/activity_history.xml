@@ -61,7 +61,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:background="@color/red"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +70,7 @@
         <ImageView
             android:id="@+id/navi_activity"
             android:layout_width="wrap_content"
-            android:layout_height="56dp"
+            android:layout_height="48dp"
             android:padding="8dp"
             android:src="@drawable/activity_icon"
             android:clickable="true"
@@ -82,7 +82,7 @@
         <ImageView
             android:id="@+id/navi_history"
             android:layout_width="wrap_content"
-            android:layout_height="56dp"
+            android:layout_height="48dp"
             android:background="@color/background"
             android:padding="8dp"
             android:src="@drawable/history_icon"
@@ -93,7 +93,7 @@
         <ImageView
             android:id="@+id/navi_settings"
             android:layout_width="wrap_content"
-            android:layout_height="56dp"
+            android:layout_height="48dp"
             android:padding="8dp"
             android:src="@drawable/setting_icon"
             android:clickable="true"
@@ -102,174 +102,4 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/navi_history" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/legend"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginRight="8dp"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:layout_below="@+id/tabs">-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="2"-->
-<!--            android:orientation="vertical">-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_margin="16dp"-->
-<!--                    style="@style/Text"-->
-<!--                    android:text="Goal" />-->
-
-<!--            </LinearLayout>-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_margin="16dp"-->
-<!--                    style="@style/Text"-->
-<!--                    android:text="Activity" />-->
-<!--            </LinearLayout>-->
-
-<!--&lt;!&ndash;            <LinearLayout&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_margin="8dp">&ndash;&gt;-->
-
-<!--&lt;!&ndash;                <ImageView&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:layout_width="16dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:layout_height="16dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:src="@drawable/info_icon"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:background="?android:attr/selectableItemBackground" />&ndash;&gt;-->
-
-<!--&lt;!&ndash;                <TextView&ndash;&gt;-->
-<!--&lt;!&ndash;                    style="@style/Text"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:layout_width="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:layout_marginLeft="8dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:textAlignment="center"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:textSize="12sp"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:text="Click on circle to update activity" />&ndash;&gt;-->
-<!--&lt;!&ndash;            </LinearLayout>&ndash;&gt;-->
-
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical"-->
-<!--            android:layout_weight="1"-->
-<!--            android:background="@drawable/empty_border">-->
-
-<!--            <RelativeLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_alignParentLeft="true"-->
-<!--                    android:layout_margin="16dp"-->
-<!--                    style="@style/Text"-->
-<!--                    android:text="Goal Name: "/>-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_alignParentRight="true"-->
-<!--                    android:layout_margin="16dp"-->
-<!--                    android:textAlignment="textEnd"-->
-<!--                    style="@style/Text"-->
-<!--                    android:text="Morning"/>-->
-
-<!--            </RelativeLayout>-->
-
-<!--            <RelativeLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_alignParentLeft="true"-->
-<!--                    android:layout_margin="16dp"-->
-<!--                    style="@style/Text"-->
-<!--                    android:text="Goal Steps: "/>-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_alignParentRight="true"-->
-<!--                    android:layout_margin="16dp"-->
-<!--                    android:textAlignment="textEnd"-->
-<!--                    style="@style/Text"-->
-<!--                    android:text="20000 "/>-->
-
-<!--            </RelativeLayout>-->
-
-<!--            <RelativeLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_alignParentLeft="true"-->
-<!--                    android:layout_margin="16dp"-->
-<!--                    style="@style/Text"-->
-<!--                    android:text="Steps Gained: "/>-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_alignParentRight="true"-->
-<!--                    android:layout_margin="16dp"-->
-<!--                    android:textAlignment="textEnd"-->
-<!--                    style="@style/Text"-->
-<!--                    android:text="15000 "/>-->
-
-<!--            </RelativeLayout>-->
-
-<!--        </LinearLayout>-->
-
-<!--    </LinearLayout>-->
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:layout_below="@+id/legend">-->
-
-<!--        <FrameLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="5">-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Steps" />-->
-
-<!--        </FrameLayout>-->
-
-
-
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="1">-->
-
-<!--        </androidx.recyclerview.widget.RecyclerView>-->
-<!--    </LinearLayout>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

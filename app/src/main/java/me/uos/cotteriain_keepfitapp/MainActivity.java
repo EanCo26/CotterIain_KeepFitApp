@@ -6,16 +6,20 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import me.uos.cotteriain_keepfitapp.Database.GoalDatabase;
+import me.uos.cotteriain_keepfitapp.Database.HistoryDatabase;
+import me.uos.cotteriain_keepfitapp.General.MyExecutor;
+import me.uos.cotteriain_keepfitapp.General.PopupWindow;
+import me.uos.cotteriain_keepfitapp.General.SharedData;
 import me.uos.cotteriain_keepfitapp.GoalSettings.GoalAdapter;
+import me.uos.cotteriain_keepfitapp.GoalSettings.GoalData;
 import me.uos.cotteriain_keepfitapp.GoalSettings.GoalViewModel;
-import me.uos.cotteriain_keepfitapp.database.GoalDatabase;
-import me.uos.cotteriain_keepfitapp.database.GoalEntry;
+import me.uos.cotteriain_keepfitapp.HistorySettings.HistoryData;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,17 +35,17 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalClickListener{
 
-    private final String TAG = "UI/" + MainActivity.class.getSimpleName();
+    private final String TAG = "My/" + MainActivity.class.getSimpleName();
 
     private SharedData sharedData;
     private GoalDatabase goalDatabase;
+    private HistoryDatabase historyDatabase;
     private GoalAdapter goalAdapter;
     final private GoalAdapter.GoalClickListener gCL = this;
 
-    private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
 
-    private GoalEntry activeGoal = null;
+    private GoalData activeGoal = null;
     private int goalSteps = 0;
     private int steps = 0;
 
@@ -60,17 +64,19 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
 
         sharedData = new SharedData(this.getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE));
         goalDatabase = GoalDatabase.getsInstance(getApplicationContext());
+        historyDatabase = HistoryDatabase.getsInstance(getApplicationContext());
 
         Date calendar = Calendar.getInstance().getTime();
         currentDate = new SimpleDateFormat("dd/MM/yyyy").format(calendar);
         oldDate = sharedData.getString(getString(R.string.activity_date), "no_date");
+        oldDate = "Debug Date";
 
         if(!currentDate.equals(oldDate)){
             clearPreviousDayData();
         }
 
         goalAdapter = new GoalAdapter(gCL);
-        layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -101,14 +107,14 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     private void viewModelSetup(){
         ViewModelProvider.AndroidViewModelFactory viewModelFactory = new ViewModelProvider.AndroidViewModelFactory(getApplication());
         GoalViewModel viewModel = new ViewModelProvider(this, viewModelFactory).get(GoalViewModel.class);
-        viewModel.getGoalList().observe(this, new Observer<List<GoalEntry>>() {
+        viewModel.getGoalList().observe(this, new Observer<List<GoalData>>() {
             @Override
-            public void onChanged(List<GoalEntry> goalEntryList) {
+            public void onChanged(List<GoalData> goalDataList) {
                 int id = sharedData.getInt(getString(R.string.current_activity), Integer.MAX_VALUE);
-                goalAdapter.setGoalList(goalEntryList, id);
+                goalAdapter.setGoalList(goalDataList, id);
                 recyclerView.swapAdapter(goalAdapter, true);
 
-                for (GoalEntry goal:goalEntryList){
+                for (GoalData goal: goalDataList){
                     if(goal.getId() == id){
                         activeGoal = goal;
                         setActiveGoalUI();
@@ -134,6 +140,16 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     }
 
     private void clearPreviousDayData(){
+        if(!oldDate.equals("no_date")) {
+            MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    historyDatabase.historyDAO().createHistory(new HistoryData(oldDate,
+                            "Placeholder", 50, 100, 50));
+                }
+            });
+        }
+
         sharedData.setInt(getString(R.string.current_steps), 0);
         sharedData.setInt(getString(R.string.current_activity), Integer.MAX_VALUE);
     }
@@ -197,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                         MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
                             @Override
                             public void run() {
-                                goalDatabase.goalDao().createGoal(new GoalEntry(name_field.getText().toString(),
+                                goalDatabase.goalDao().createGoal(new GoalData(name_field.getText().toString(),
                                                 Integer.parseInt(steps_field.getText().toString())));
                             }
                         });
@@ -207,78 +223,81 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         });
     }
 
-    private void editGoalPopup(int itemIndex, GoalEntry goal){
-        View popupLayout = getLayoutInflater().inflate(R.layout.edit_popup, null);
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setView(popupLayout);
-        PopupWindow popupWindow = new PopupWindow(dialogBuilder, dialogBuilder.create());
-        popupWindow.showWindow();
+    private void editGoalPopup(int itemIndex, GoalData goal){
+        if(activeGoal != goal) {
+            View popupLayout = getLayoutInflater().inflate(R.layout.edit_popup, null);
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            dialogBuilder.setView(popupLayout);
+            PopupWindow popupWindow = new PopupWindow(dialogBuilder, dialogBuilder.create());
+            popupWindow.showWindow();
 
-        EditText name_field = (EditText) popupLayout.findViewById(R.id.edit_name);
-        name_field.setText(goal.getName());
+            EditText name_field = (EditText) popupLayout.findViewById(R.id.edit_name);
+            name_field.setText(goal.getName());
 
-        EditText steps_field = (EditText) popupLayout.findViewById(R.id.edit_steps);
-        steps_field.setText(Integer.toString(goal.getSteps()));
+            EditText steps_field = (EditText) popupLayout.findViewById(R.id.edit_steps);
+            steps_field.setText(Integer.toString(goal.getSteps()));
 
-        Button popup_button = (Button) popupLayout.findViewById(R.id.edit_button);
+            Button popup_button = (Button) popupLayout.findViewById(R.id.edit_button);
 
-        boolean isGoalsEditable = sharedData.getBool(getString(R.string.setting_goals_editable), true);
-        if(isGoalsEditable) {
-            popup_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Boolean hasName = false, hasSteps = false;
-                    if (!name_field.getText().toString().isEmpty()) {
-                        hasName = true;
-                    }
-                    if (!steps_field.getText().toString().isEmpty()) {
-                        hasSteps = true;
-                    }
-
-                    if (hasName && hasSteps) {
-                        goal.setName(name_field.getText().toString());
-                        goal.setSteps(Integer.parseInt(steps_field.getText().toString()));
-                        MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                goalDatabase.goalDao().editGoal(goal);
-                            }
-                        });
-                        popupWindow.closeWindow();
-                    }
-                }
-            });
-        }else{
-            TextView helper_msg = (TextView) popupLayout.findViewById(R.id.helper_text);
-            helper_msg.setText("Make goals to editable in Settings");
-
-            popup_button.setEnabled(false);
-            popup_button.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.goal_grey)));
-
-            name_field.setEnabled(false);
-            name_field.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.goal_grey)));
-
-            steps_field.setEnabled(false);
-            steps_field.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.goal_grey)));
-        }
-
-        TextView delete_goal = (TextView) popupLayout.findViewById(R.id.delete);
-        delete_goal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
+            boolean isGoalsEditable = sharedData.getBool(getString(R.string.setting_goals_editable), true);
+            if (isGoalsEditable) {
+                popup_button.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void run() {
-                        goalDatabase.goalDao().deleteGoal(goalAdapter.getGoalEntryAt(itemIndex));
+                    public void onClick(View v) {
+                        Boolean hasName = false, hasSteps = false;
+                        if (!name_field.getText().toString().isEmpty()) {
+                            hasName = true;
+                        }
+                        if (!steps_field.getText().toString().isEmpty()) {
+                            hasSteps = true;
+                        }
+
+                        if (hasName && hasSteps) {
+                            goal.setName(name_field.getText().toString());
+                            goal.setSteps(Integer.parseInt(steps_field.getText().toString()));
+                            MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    goalDatabase.goalDao().editGoal(goal);
+                                }
+                            });
+                            popupWindow.closeWindow();
+                        }
                     }
                 });
-                if(goal.getId() == activeGoal.getId()){
-                    activeGoal = null;
-                    resetDisplay();
-                }
-                popupWindow.closeWindow();
+            } else {
+                TextView helper_msg = (TextView) popupLayout.findViewById(R.id.helper_text);
+                helper_msg.setText("Make goals to editable in Settings");
+
+                popup_button.setEnabled(false);
+                popup_button.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.goal_grey)));
+
+                name_field.setEnabled(false);
+                name_field.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.goal_grey)));
+
+                steps_field.setEnabled(false);
+                steps_field.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.goal_grey)));
             }
-        });
+
+            TextView delete_goal = (TextView) popupLayout.findViewById(R.id.delete);
+            delete_goal.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            goalDatabase.goalDao().deleteGoal(goalAdapter.getGoalEntryAt(itemIndex));
+                        }
+                    });
+                    //todo check if necessary since user is not allowed to edit or delete active goals
+//                    if (goal.getId() == activeGoal.getId()) {
+//                        activeGoal = null;
+//                        resetDisplay();
+//                    }
+                    popupWindow.closeWindow();
+                }
+            });
+        }
     }
 
     public void changeActivity(View view){
@@ -300,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     }
 
     @Override
-    public void onGoalClick(int itemIndex, GoalEntry goal){
+    public void onGoalClick(int itemIndex, GoalData goal){
         if(!currentDate.equals(oldDate)){
             sharedData.setString(getString(R.string.activity_date), currentDate);
         }
@@ -313,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     }
 
     @Override
-    public void onEditClick(int itemIndex, GoalEntry goal) {
+    public void onEditClick(int itemIndex, GoalData goal) {
         editGoalPopup(itemIndex, goal);
     }
 }

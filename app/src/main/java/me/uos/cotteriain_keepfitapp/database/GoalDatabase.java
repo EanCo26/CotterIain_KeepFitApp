@@ -1,13 +1,11 @@
-package me.uos.cotteriain_keepfitapp.database;
-
+package me.uos.cotteriain_keepfitapp.Database;
 
 import android.content.Context;
-
-import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import me.uos.cotteriain_keepfitapp.GoalSettings.GoalData;
 
-@Database(entities = {GoalEntry.class}, version = 1, exportSchema = false)
+@androidx.room.Database(entities = {GoalData.class}, version = 1, exportSchema = false)
 public abstract class GoalDatabase extends RoomDatabase {
 
     private static final Object LOCK = new Object();

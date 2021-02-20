@@ -1,11 +1,11 @@
-package me.uos.cotteriain_keepfitapp.database;
+package me.uos.cotteriain_keepfitapp.GoalSettings;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "goal")
-public class GoalEntry {
+public class GoalData {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -13,12 +13,12 @@ public class GoalEntry {
     private int steps;
 
     @Ignore
-    public GoalEntry(String name, int steps) {
+    public GoalData(String name, int steps) {
         this.name = name;
         this.steps = steps;
     }
 
-    public GoalEntry(int id, String name, int steps) {
+    public GoalData(int id, String name, int steps) {
         this.id = id;
         this.name = name;
         this.steps = steps;

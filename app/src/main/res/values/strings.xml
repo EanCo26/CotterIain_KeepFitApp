@@ -8,4 +8,5 @@
     <string name="activity_date">me.uos.cotteriain_keepfitapp.ActivityDate</string>
     <string name="current_steps">me.uos.cotteriain_keepfitapp.CurrentSteps</string>
     <string name="setting_goals_editable">me.uos.cotteriain_keepfitapp.GoalsEditable</string>
+    <string name="setting_history_editable">me.uos.cotteriain_keepfitapp.HistoryEditable</string>
 </resources>

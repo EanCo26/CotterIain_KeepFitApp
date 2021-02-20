@@ -1,4 +1,4 @@
-package me.uos.cotteriain_keepfitapp.database;
+package me.uos.cotteriain_keepfitapp.Database;
 
 import java.util.List;
 
@@ -9,24 +9,25 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+import me.uos.cotteriain_keepfitapp.GoalSettings.GoalData;
 
 @Dao
 public interface GoalDao {
 
     @Query("SELECT * FROM goal")
-    LiveData<List<GoalEntry>> loadAllGoals();
+    LiveData<List<GoalData>> loadAllGoals();
 
     @Insert
-    void createGoal(GoalEntry goalEntry);
+    void createGoal(GoalData goalData);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void editGoal(GoalEntry goalEntry);
+    void editGoal(GoalData goalData);
 
     @Delete
-    void deleteGoal(GoalEntry goalEntry);
+    void deleteGoal(GoalData goalData);
 
     @Query("SELECT * FROM goal WHERE id = :id")
-    LiveData<GoalEntry> loadGoalById(int id);
+    LiveData<GoalData> loadGoalById(int id);
 
     @Query("DELETE FROM goal")
     void clearGoalTable();

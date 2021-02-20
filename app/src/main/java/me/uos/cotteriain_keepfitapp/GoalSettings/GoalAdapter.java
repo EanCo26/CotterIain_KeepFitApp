@@ -12,11 +12,10 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import me.uos.cotteriain_keepfitapp.R;
-import me.uos.cotteriain_keepfitapp.database.GoalEntry;
 
 public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
 
-    private List<GoalEntry> goalList;
+    private List<GoalData> goalList;
     private List<ViewHolder> holders;
     private GoalClickListener goalClickListener;
     private int goalId;
@@ -28,7 +27,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
         this.goalClickListener = goalClickListener;
     }
 
-    public void setGoalList(List<GoalEntry> goalList, int goalId) {
+    public void setGoalList(List<GoalData> goalList, int goalId) {
         holders.clear();
         this.goalList = goalList;
         this.goalId = goalId;
@@ -73,7 +72,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
     public int getSelectedViewIndex() { return selectedViewIndex; }
     public void setSelectedViewIndex(int selectedViewIndex) { this.selectedViewIndex = selectedViewIndex; }
 
-    public GoalEntry getGoalEntryAt(int index){ return holders.get(index).getGoal(); }
+    public GoalData getGoalEntryAt(int index){ return holders.get(index).getGoalData(); }
     @Override
     public int getItemCount() { return goalList.size(); }
 
@@ -83,7 +82,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
         private TextView nameView;
         private TextView stepsView;
         private View borderView;
-        private GoalEntry goal;
+        private GoalData goal;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -103,20 +102,20 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
             });
         }
 
-        private void setGoalData(GoalEntry goal) {
+        private void setGoalData(GoalData goal) {
             this.goal = goal;
             nameView.setText(goal.getName());
             stepsView.setText(Integer.toString(goal.getSteps()));
         }
 
-        public GoalEntry getGoal() { return goal; }
+        private GoalData getGoalData() { return goal; }
         private int getGoalId(){ return goal.getId(); }
 
         private void setBorder(boolean isBorderActive){ borderView.setBackgroundResource(isBorderActive?R.drawable.selected_border:R.drawable.empty_border); }
     }
 
     public interface GoalClickListener{
-        void onGoalClick(int itemIndex, GoalEntry goal);
-        void onEditClick(int itemIndex, GoalEntry goal);
+        void onGoalClick(int itemIndex, GoalData goal);
+        void onEditClick(int itemIndex, GoalData goal);
     }
 }

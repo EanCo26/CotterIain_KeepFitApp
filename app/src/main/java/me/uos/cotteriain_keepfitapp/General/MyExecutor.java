@@ -1,10 +1,7 @@
-package me.uos.cotteriain_keepfitapp;
+package me.uos.cotteriain_keepfitapp.General;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-import androidx.annotation.MainThread;
-import androidx.core.content.ContextCompat;
 
 public class MyExecutor {
 

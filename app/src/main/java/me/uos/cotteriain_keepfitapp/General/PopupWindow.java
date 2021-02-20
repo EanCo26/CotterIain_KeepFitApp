@@ -1,4 +1,4 @@
-package me.uos.cotteriain_keepfitapp;
+package me.uos.cotteriain_keepfitapp.General;
 
 import android.content.Context;
 import android.view.View;

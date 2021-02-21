@@ -55,5 +55,5 @@ public class HistoryData {
     public void setDate(String date) { this.date = date; }
     public void setStepsTaken(int stepsTaken) { this.stepsTaken = stepsTaken; }
     public void setGoalSteps(int goalSteps) { this.goalSteps = goalSteps; }
-    private void setPercentageToGoal(int percentageToGoal) { this.percentageToGoal = percentageToGoal; }
+    public void setPercentageToGoal(int percentageToGoal) { this.percentageToGoal = percentageToGoal; }
 }

@@ -234,13 +234,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         popup_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Boolean hasName= false, hasSteps = false;
-                    if(!name_field.getText().toString().isEmpty()){
-                        hasName = true;
-                    }
-                    if(!steps_field.getText().toString().isEmpty()){
-                        hasSteps = true;
-                    }
+                    Boolean hasName = !name_field.getText().toString().isEmpty(),
+                            hasSteps = !steps_field.getText().toString().isEmpty();
                     if(hasName&&hasSteps){
                         MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
                             @Override
@@ -276,13 +271,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                 popup_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Boolean hasName = false, hasSteps = false;
-                        if (!name_field.getText().toString().isEmpty()) {
-                            hasName = true;
-                        }
-                        if (!steps_field.getText().toString().isEmpty()) {
-                            hasSteps = true;
-                        }
+                        Boolean hasName = !name_field.getText().toString().isEmpty(),
+                                hasSteps = !steps_field.getText().toString().isEmpty();
 
                         if (hasName && hasSteps) {
                             goal.setName(name_field.getText().toString());

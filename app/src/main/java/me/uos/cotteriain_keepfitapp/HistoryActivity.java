@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import me.uos.cotteriain_keepfitapp.General.SharedData;
-import me.uos.cotteriain_keepfitapp.GoalSettings.GoalViewModel;
 import me.uos.cotteriain_keepfitapp.HistorySettings.HistoryAdapter;
 import me.uos.cotteriain_keepfitapp.HistorySettings.HistoryData;
 import me.uos.cotteriain_keepfitapp.HistorySettings.HistoryViewModel;
@@ -26,9 +28,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
     private SharedData sharedData;
 
-    private RecyclerView historyView;
-
-    private List<HistoryData> historyList;
+    private RecyclerView recyclerView;
     private HistoryAdapter historyAdapter;
     private HistoryAdapter.HistoryClickListener hCl = this;
 
@@ -39,10 +39,14 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
         sharedData = new SharedData(this.getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE));
 
+        TextView dateText = (TextView)findViewById(R.id.date);
+        Date calendar = Calendar.getInstance().getTime();
+        dateText.setText(new SimpleDateFormat("dd/MM/yyyy").format(calendar));
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        historyView = (RecyclerView)findViewById(R.id.history_list);
-        historyView.setLayoutManager(layoutManager);
+        recyclerView = (RecyclerView)findViewById(R.id.history_list);
+        recyclerView.setLayoutManager(layoutManager);
         historyAdapter = new HistoryAdapter(hCl);
 
         setupViewModel();
@@ -55,7 +59,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
             @Override
             public void onChanged(List<HistoryData> historyDataList) {
                 historyAdapter.setHistoryData(historyDataList);
-                historyView.swapAdapter(historyAdapter, true);
+                recyclerView.swapAdapter(historyAdapter, true);
             }
         });
     }

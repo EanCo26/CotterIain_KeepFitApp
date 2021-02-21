@@ -18,6 +18,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
     private List<GoalData> goalList;
     private List<ViewHolder> holders;
     private GoalClickListener goalClickListener;
+
     private int goalId;
     private int selectedViewIndex = Integer.MAX_VALUE;
 
@@ -44,11 +45,12 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull GoalAdapter.ViewHolder holder, int position) {
-        String name = goalList.get(position).getName();
-        int steps = goalList.get(position).getSteps();
+        GoalData currentGoal = goalList.get(position);
+        String name = currentGoal.getName();
+        int steps = currentGoal.getSteps();
 
-        holder.setGoalData(goalList.get(position));
-        boolean active = goalId == holder.getGoalId();
+        holder.setGoalData(currentGoal);
+        boolean active = goalId == currentGoal.getId();
         holder.setBorder(active);
         if(active){
             selectedViewIndex = position;
@@ -56,25 +58,23 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
         holders.add(holder);
     }
 
-    public void selectGoal(int selectedViewIndex){
+    @Override
+    public int getItemCount() { return goalList.size(); }
+
+    public void setActiveGoal(int selectedViewIndex){
         if(this.selectedViewIndex == selectedViewIndex)
             return;
 
         if(this.selectedViewIndex != Integer.MAX_VALUE)
             holders.get(this.selectedViewIndex).setBorder(false);
 
-        goalId = holders.get(selectedViewIndex).getGoalId();
+        goalId = holders.get(selectedViewIndex).getGoalData().getId();
         this.selectedViewIndex = selectedViewIndex;
 
         holders.get(this.selectedViewIndex).setBorder(true);
     }
 
-    public int getSelectedViewIndex() { return selectedViewIndex; }
-    public void setSelectedViewIndex(int selectedViewIndex) { this.selectedViewIndex = selectedViewIndex; }
-
     public GoalData getGoalEntryAt(int index){ return holders.get(index).getGoalData(); }
-    @Override
-    public int getItemCount() { return goalList.size(); }
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -94,7 +94,6 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) { goalClickListener.onGoalClick(getAdapterPosition(), goal); }
             });
-
             pencil = itemView.findViewById(R.id.edit);
             pencil.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,7 +108,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
         }
 
         private GoalData getGoalData() { return goal; }
-        private int getGoalId(){ return goal.getId(); }
+//        private int getGoalId(){ return goal.getId(); }
 
         private void setBorder(boolean isBorderActive){ borderView.setBackgroundResource(isBorderActive?R.drawable.selected_border:R.drawable.empty_border); }
     }

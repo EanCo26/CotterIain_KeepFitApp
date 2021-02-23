@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         setPersistentData();
         setRecyclerView();
 
+
+        //todo put date in separate class and make a singleton pattern that can be accessed from any activity
         Date calendar = Calendar.getInstance().getTime();
         currentDate = new SimpleDateFormat("dd/MM/yyyy").format(calendar);
 //        sharedData.setString(getString(R.string.activity_date), "no_date");
@@ -291,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                 TextView helper_msg = (TextView) popupLayout.findViewById(R.id.helper_text);
                 helper_msg.setText("Make goals to editable in Settings");
 
+                //todo getColor looks deprecated change to recent version to avoid future errors
                 popup_button.setEnabled(false);
                 popup_button.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.goal_grey)));
 

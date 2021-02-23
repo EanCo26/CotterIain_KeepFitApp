@@ -28,7 +28,6 @@ public class SettingsActivity extends AppCompatActivity {
     private boolean isHistoryEditable;
     private Switch historySetting;
 
-    //todo - allow user to press button and dialog appears to confirm clear history
     private Button clearHistoryButton;
     private HistoryDatabase historyDatabase;
 

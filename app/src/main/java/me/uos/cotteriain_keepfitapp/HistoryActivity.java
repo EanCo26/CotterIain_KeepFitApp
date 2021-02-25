@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +67,12 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         viewModel.getHistoryList().observe(this, new Observer<List<HistoryData>>() {
             @Override
             public void onChanged(List<HistoryData> historyDataList) {
-                historyAdapter.setHistoryData(historyDataList);
+                List<HistoryData> inverseList = new ArrayList<>();
+                for(int i = historyDataList.size()-1; i>=0; i--){
+                    inverseList.add(historyDataList.get(i));
+                }
+
+                historyAdapter.setHistoryData(inverseList);
                 recyclerView.swapAdapter(historyAdapter, true);
             }
         });

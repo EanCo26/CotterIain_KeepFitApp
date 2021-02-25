@@ -108,7 +108,6 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) { goalClickListener.onEditClick(getAdapterPosition(), goal); }
             });
-            editIcon.setEnabled(editable);
             editIcon.setVisibility(editable ? View.VISIBLE : View.INVISIBLE);
 
             deleteIcon = itemView.findViewById(R.id.delete);
@@ -128,11 +127,11 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
 
         private void setActive(boolean isActive){
             borderView.setBackgroundResource(isActive?R.drawable.selected_border:R.drawable.empty_border);
-            if(editable) {
-                editIcon.setEnabled(!isActive);
-                editIcon.setVisibility(!isActive ? View.VISIBLE : View.INVISIBLE);
-            }
-            deleteIcon.setVisibility(!isActive ? View.VISIBLE : View.INVISIBLE);
+            if(editable)
+                editIcon.setVisibility(isActive ? View.INVISIBLE : View.VISIBLE);
+            else
+                editIcon.setVisibility(View.INVISIBLE);
+            deleteIcon.setVisibility(isActive ? View.INVISIBLE : View.VISIBLE);
         }
     }
 

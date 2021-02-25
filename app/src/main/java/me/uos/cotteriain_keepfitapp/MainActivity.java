@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import me.uos.cotteriain_keepfitapp.Database.GoalDatabase;
 import me.uos.cotteriain_keepfitapp.Database.HistoryDatabase;
+import me.uos.cotteriain_keepfitapp.General.DateSystem;
 import me.uos.cotteriain_keepfitapp.General.MyExecutor;
 import me.uos.cotteriain_keepfitapp.General.PopupWindow;
 import me.uos.cotteriain_keepfitapp.General.SharedData;
@@ -59,8 +60,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     private EditText stepsEdit;
     private ProgressBar progressBar;
 
-    private String currentDate;
-    private String oldDate;
+    private DateSystem dateSystem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,30 +70,28 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         setPersistentData();
         assignActivityElements();
         setRecyclerView();
-
-
-        //todo put date in separate class and make a singleton pattern that can be accessed from any activity
-        Date calendar = Calendar.getInstance().getTime();
-        currentDate = new SimpleDateFormat("dd/MM/yyyy").format(calendar);
-//        sharedData.setString(getString(R.string.activity_date), "no_date");
-        oldDate = sharedData.getString(getString(R.string.activity_date), "no_date");
-
         viewModelSetup();
     }
 
     private void assignActivityElements(){
-        goalText = (TextView) findViewById(R.id.goal_number);
         headerText = (TextView) findViewById(R.id.header);
+        goalText = (TextView) findViewById(R.id.goal_number);
+        stepsEdit = (EditText) findViewById(R.id.steps);
+        steps = sharedData.getInt(getString(R.string.current_steps), 0);
+        stepsEdit.setText(Integer.toString(steps));
+
+        progressBar = (ProgressBar)findViewById(R.id.progress);
+        progressBar.setProgress(0);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)findViewById(R.id.add_goal);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { createGoalPopup(); }
         });
+    }
 
-        stepsEdit = (EditText) findViewById(R.id.steps);
-        steps = sharedData.getInt(getString(R.string.current_steps), 0);
-        stepsEdit.setText(Integer.toString(steps));
+    private void setStepsEdit(){
+        //todo error appeared when number was exceedinly high - (java.lang.NumberFormatException: For input string: "6666000000")
         stepsEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -107,13 +105,12 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                 changeToSteps(stepsChanged);
             }
         });
-
-        progressBar = (ProgressBar)findViewById(R.id.progress);
-        progressBar.setProgress(0);
     }
 
     private void setPersistentData(){
         sharedData = new SharedData(this.getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE));
+        Date calendar = Calendar.getInstance().getTime();
+        dateSystem = new DateSystem(new SimpleDateFormat("dd/MM/yyyy").format(calendar), sharedData.getString(getString(R.string.activity_date), "no_date"));
         goalDatabase = GoalDatabase.getsInstance(getApplicationContext());
         historyDatabase = HistoryDatabase.getsInstance(getApplicationContext());
     }
@@ -147,7 +144,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                     activeGoal = goalDataList.get(activeGoalIndex);
                 }
 
-                if(currentDate.equals(oldDate)) {
+                if(dateSystem.datesMatch())
+                {
                     setGoalProgressUI();
                 }
                 else{
@@ -155,13 +153,10 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                     resetActiveGoalData();
                 }
                 id = sharedData.getInt(getString(R.string.current_activity), Integer.MAX_VALUE);
-//                List<GoalData> inverseList = new ArrayList<>();
-//                for(int i = goalDataList.size()-1; i>=0; i--){
-//                    inverseList.add(goalDataList.get(i));
-//                }
-//                goalAdapter.setGoalList(inverseList, id);
                 goalAdapter.setGoalList(goalDataList, id);
                 recyclerView.swapAdapter(goalAdapter, true);
+
+                setStepsEdit();
             }
         });
     }
@@ -186,8 +181,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     }
 
     private void resetActiveGoalData(){
-        oldDate = currentDate;
-        sharedData.setString(getString(R.string.activity_date), currentDate);
+        dateSystem.setOldDate(dateSystem.getCurrentDate());
+        sharedData.setString(getString(R.string.activity_date), dateSystem.getCurrentDate());
         sharedData.setInt(getString(R.string.current_steps), 0);
         sharedData.setInt(getString(R.string.current_activity), Integer.MAX_VALUE);
     }
@@ -198,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
             steps = sharedData.getInt(getString(R.string.current_steps), 0);
             int goalSteps = activeGoal.getSteps();
             int percent = (steps * 100 / goalSteps <= 100) ? steps * 100 / goalSteps : 100;
-            HistoryData newHistoryData = new HistoryData(oldDate, goalName, steps, goalSteps, percent);
+            HistoryData newHistoryData = new HistoryData(dateSystem.getOldDate(), goalName, steps, goalSteps, percent);
 
             MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
                 @Override
@@ -304,6 +299,9 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         int inAnim = android.R.anim.slide_in_left;
         int outAnim = android.R.anim.slide_out_right;
         switch(itemID){
+            case R.id.history:
+                intent = new Intent(this, HistoryActivity.class);
+                break;
             case R.id.settings:
                 intent = new Intent(this, SettingsActivity.class);
                 break;

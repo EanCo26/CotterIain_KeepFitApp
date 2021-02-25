@@ -86,7 +86,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
-        private ImageView pencil;
+        private ImageView editIcon, deleteIcon;
         private TextView nameView, stepsView;
         private View borderView;
         private GoalData goal;
@@ -103,13 +103,19 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
                 public void onClick(View v) { goalClickListener.onGoalClick(getAdapterPosition(), goal); }
             });
 
-            pencil = itemView.findViewById(R.id.edit);
-            pencil.setOnClickListener(new View.OnClickListener() {
+            editIcon = itemView.findViewById(R.id.edit);
+            editIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) { goalClickListener.onEditClick(getAdapterPosition(), goal); }
             });
-            pencil.setEnabled(editable);
-            pencil.setVisibility(editable ? View.VISIBLE : View.INVISIBLE);
+            editIcon.setEnabled(editable);
+            editIcon.setVisibility(editable ? View.VISIBLE : View.INVISIBLE);
+
+            deleteIcon = itemView.findViewById(R.id.delete);
+            deleteIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) { goalClickListener.onDeleteClick(getAdapterPosition(), goal); }
+            });
         }
 
         private void setGoalData(GoalData goal) {
@@ -123,14 +129,16 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
         private void setActive(boolean isActive){
             borderView.setBackgroundResource(isActive?R.drawable.selected_border:R.drawable.empty_border);
             if(editable) {
-                pencil.setEnabled(!isActive);
-                pencil.setVisibility(!isActive ? View.VISIBLE : View.INVISIBLE);
+                editIcon.setEnabled(!isActive);
+                editIcon.setVisibility(!isActive ? View.VISIBLE : View.INVISIBLE);
             }
+            deleteIcon.setVisibility(!isActive ? View.VISIBLE : View.INVISIBLE);
         }
     }
 
     public interface GoalClickListener{
         void onGoalClick(int itemIndex, GoalData goal);
         void onEditClick(int itemIndex, GoalData goal);
+        void onDeleteClick(int itemIndex, GoalData goal);
     }
 }

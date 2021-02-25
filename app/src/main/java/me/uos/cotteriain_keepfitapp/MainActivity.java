@@ -35,6 +35,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -154,6 +155,11 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                     resetActiveGoalData();
                 }
                 id = sharedData.getInt(getString(R.string.current_activity), Integer.MAX_VALUE);
+//                List<GoalData> inverseList = new ArrayList<>();
+//                for(int i = goalDataList.size()-1; i>=0; i--){
+//                    inverseList.add(goalDataList.get(i));
+//                }
+//                goalAdapter.setGoalList(inverseList, id);
                 goalAdapter.setGoalList(goalDataList, id);
                 recyclerView.swapAdapter(goalAdapter, true);
             }
@@ -252,22 +258,20 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     }
 
     private void editGoalPopup(int itemIndex, GoalData goal){
-//        if(activeGoal != goal)
-        {
-            View popupLayout = getLayoutInflater().inflate(R.layout.edit_popup, null);
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-            dialogBuilder.setView(popupLayout);
-            PopupWindow popupWindow = new PopupWindow(dialogBuilder, dialogBuilder.create());
-            popupWindow.showWindow();
+        View popupLayout = getLayoutInflater().inflate(R.layout.edit_popup, null);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setView(popupLayout);
+        PopupWindow popupWindow = new PopupWindow(dialogBuilder, dialogBuilder.create());
+        popupWindow.showWindow();
 
-            EditText name_field = (EditText) popupLayout.findViewById(R.id.edit_name);
-            name_field.setText(goal.getName());
+        EditText name_field = (EditText) popupLayout.findViewById(R.id.edit_name);
+        name_field.setText(goal.getName());
 
-            EditText steps_field = (EditText) popupLayout.findViewById(R.id.edit_steps);
-            steps_field.setText(Integer.toString(goal.getSteps()));
+        EditText steps_field = (EditText) popupLayout.findViewById(R.id.edit_steps);
+        steps_field.setText(Integer.toString(goal.getSteps()));
 
-            Button popup_button = (Button) popupLayout.findViewById(R.id.edit_button);
-            popup_button.setOnClickListener(new View.OnClickListener() {
+        Button popup_button = (Button) popupLayout.findViewById(R.id.edit_button);
+        popup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Boolean hasName = !name_field.getText().toString().isEmpty(),
@@ -286,21 +290,6 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                 }
             }
         });
-
-//            TextView delete_goal = (TextView) popupLayout.findViewById(R.id.delete);
-//            delete_goal.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            goalDatabase.goalDao().deleteGoal(goalAdapter.getGoalEntryAt(itemIndex));
-//                        }
-//                    });
-//                    popupWindow.closeWindow();
-//                }
-//            });
-        }
     }
 
     @Override
@@ -342,5 +331,15 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     @Override
     public void onEditClick(int itemIndex, GoalData goal) {
         editGoalPopup(itemIndex, goal);
+    }
+
+    @Override
+    public void onDeleteClick(int itemIndex, GoalData goal) {
+        MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                goalDatabase.goalDao().deleteGoal(goal);
+            }
+        });
     }
 }

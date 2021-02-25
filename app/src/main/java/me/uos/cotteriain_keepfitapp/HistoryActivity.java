@@ -72,23 +72,23 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         });
     }
 
-    public void changeActivity(View view){
-        Intent intent = null;
-        int inAnim = android.R.anim.slide_in_left;
-        int outAnim = android.R.anim.slide_out_right;
-        switch(view.getId()){
-            case R.id.navi_activity:
-                intent = new Intent(this, MainActivity.class);
-                break;
-            case R.id.navi_settings:
-                intent = new Intent(this, SettingsActivity.class);
-                break;
-        }
-        if(intent != null) {
-            startActivity(intent);
-            overridePendingTransition(inAnim, outAnim);
-        }
-    }
+//    public void changeActivity(View view){
+//        Intent intent = null;
+//        int inAnim = android.R.anim.slide_in_left;
+//        int outAnim = android.R.anim.slide_out_right;
+//        switch(view.getId()){
+//            case R.id.navi_activity:
+//                intent = new Intent(this, MainActivity.class);
+//                break;
+//            case R.id.navi_settings:
+//                intent = new Intent(this, SettingsActivity.class);
+//                break;
+//        }
+//        if(intent != null) {
+//            startActivity(intent);
+//            overridePendingTransition(inAnim, outAnim);
+//        }
+//    }
 
     private void editHistoryItem(int itemIndex, HistoryData historyData){
         View popupLayout = getLayoutInflater().inflate(R.layout.edit_history_popup, null);

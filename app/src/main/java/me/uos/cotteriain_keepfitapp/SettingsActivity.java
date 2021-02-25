@@ -93,21 +93,21 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    public void changeActivity(View view){
-        Intent intent = null;
-        int inAnim = android.R.anim.slide_in_left;
-        int outAnim = android.R.anim.slide_out_right;
-        switch(view.getId()){
-            case R.id.navi_activity:
-                intent = new Intent(this, MainActivity.class);
-                break;
-            case R.id.navi_history:
-                intent = new Intent(this, HistoryActivity.class);
-                break;
-        }
-        if(intent != null) {
-            startActivity(intent);
-            overridePendingTransition(inAnim, outAnim);
-        }
-    }
+//    public void changeActivity(View view){
+//        Intent intent = null;
+//        int inAnim = android.R.anim.slide_in_left;
+//        int outAnim = android.R.anim.slide_out_right;
+//        switch(view.getId()){
+//            case R.id.navi_activity:
+//                intent = new Intent(this, MainActivity.class);
+//                break;
+//            case R.id.navi_history:
+//                intent = new Intent(this, HistoryActivity.class);
+//                break;
+//        }
+//        if(intent != null) {
+//            startActivity(intent);
+//            overridePendingTransition(inAnim, outAnim);
+//        }
+//    }
 }

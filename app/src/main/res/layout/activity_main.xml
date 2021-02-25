@@ -15,7 +15,7 @@
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/add_goal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/add_goal"
         app:layout_constraintBottom_toBottomOf="@id/add_goal"
 

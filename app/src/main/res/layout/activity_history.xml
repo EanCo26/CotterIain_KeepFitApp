@@ -23,50 +23,5 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/date"
-        app:layout_constraintBottom_toTopOf="@+id/navigation_bar"/>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/navigation_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/red"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <ImageView
-            android:id="@+id/navi_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:padding="8dp"
-            android:src="@drawable/activity_icon"
-            android:clickable="true"
-            android:onClick="changeActivity"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/navi_history"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageView
-            android:id="@+id/navi_history"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:background="@color/background"
-            android:padding="8dp"
-            android:src="@drawable/history_icon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <ImageView
-            android:id="@+id/navi_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:padding="8dp"
-            android:src="@drawable/setting_icon"
-            android:clickable="true"
-            android:onClick="changeActivity"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/navi_history" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

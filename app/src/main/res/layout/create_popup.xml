@@ -59,6 +59,7 @@
         android:layout_marginTop="8dp"
         android:hint="Enter Steps..."
         android:backgroundTint="@color/red"
+        android:imeOptions="actionDone"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/text2"

@@ -22,10 +22,13 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
     private int goalId;
     private int selectedViewIndex = Integer.MAX_VALUE;
 
-    public GoalAdapter(GoalClickListener goalClickListener) {
+    private boolean editable = true;
+
+    public GoalAdapter(GoalClickListener goalClickListener, boolean editable) {
         this.goalList = new ArrayList<>();
         this.holders = new ArrayList<>();
         this.goalClickListener = goalClickListener;
+        this.editable = editable;
     }
 
     public void setGoalList(List<GoalData> goalList, int goalId) {
@@ -33,6 +36,11 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
         this.goalList = goalList;
         this.goalId = goalId;
         this.selectedViewIndex = Integer.MAX_VALUE;
+        notifyDataSetChanged();
+    }
+
+    public void setEditable(boolean editable){
+        this.editable = editable;
         notifyDataSetChanged();
     }
 
@@ -51,7 +59,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
 
         holder.setGoalData(currentGoal);
         boolean active = goalId == currentGoal.getId();
-        holder.setBorder(active);
+        holder.setActive(active);
         if(active){
             selectedViewIndex = position;
         }
@@ -66,12 +74,12 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
             return;
 
         if(this.selectedViewIndex != Integer.MAX_VALUE)
-            holders.get(this.selectedViewIndex).setBorder(false);
+            holders.get(this.selectedViewIndex).setActive(false);
 
         goalId = holders.get(selectedViewIndex).getGoalData().getId();
         this.selectedViewIndex = selectedViewIndex;
 
-        holders.get(this.selectedViewIndex).setBorder(true);
+        holders.get(this.selectedViewIndex).setActive(true);
     }
 
     public GoalData getGoalEntryAt(int index){ return holders.get(index).getGoalData(); }
@@ -79,8 +87,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView pencil;
-        private TextView nameView;
-        private TextView stepsView;
+        private TextView nameView, stepsView;
         private View borderView;
         private GoalData goal;
 
@@ -89,16 +96,20 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
 
             nameView = itemView.findViewById(R.id.goal_name);
             stepsView = itemView.findViewById(R.id.goal_steps);
+
             borderView = itemView;
             borderView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) { goalClickListener.onGoalClick(getAdapterPosition(), goal); }
             });
+
             pencil = itemView.findViewById(R.id.edit);
             pencil.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) { goalClickListener.onEditClick(getAdapterPosition(), goal); }
             });
+            pencil.setEnabled(editable);
+            pencil.setVisibility(editable ? View.VISIBLE : View.INVISIBLE);
         }
 
         private void setGoalData(GoalData goal) {
@@ -108,9 +119,14 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
         }
 
         private GoalData getGoalData() { return goal; }
-//        private int getGoalId(){ return goal.getId(); }
 
-        private void setBorder(boolean isBorderActive){ borderView.setBackgroundResource(isBorderActive?R.drawable.selected_border:R.drawable.empty_border); }
+        private void setActive(boolean isActive){
+            borderView.setBackgroundResource(isActive?R.drawable.selected_border:R.drawable.empty_border);
+            if(editable) {
+                pencil.setEnabled(!isActive);
+                pencil.setVisibility(!isActive ? View.VISIBLE : View.INVISIBLE);
+            }
+        }
     }
 
     public interface GoalClickListener{

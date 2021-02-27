@@ -11,13 +11,10 @@
         android:id="@+id/goal_name"
         style="@style/Text"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/edit"
-        android:text="Goal Name"
-        android:textAlignment="center"
-        android:textSize="16sp" />
+        app:layout_constraintEnd_toStartOf="@id/delete"
+        android:text="Goal Name" />
 
     <ImageView
         android:id="@+id/delete"
@@ -25,42 +22,40 @@
         android:layout_height="24dp"
         android:background="?selectableItemBackground"
         android:clickable="true"
-        android:src="@drawable/bin"
+        android:src="@drawable/bin_icon"
+        app:layout_constraintStart_toEndOf="@+id/goal_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/goal_name"
+        app:layout_constraintBottom_toBottomOf="@id/goal_name"/>
 
     <ImageView
         android:id="@+id/edit"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/delete"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="?selectableItemBackground"
         android:clickable="true"
         android:src="@drawable/pencil_icon"
-        android:background="?selectableItemBackground"/>
+        app:layout_constraintStart_toStartOf="@id/delete"
+        app:layout_constraintEnd_toEndOf="@id/delete"
+        app:layout_constraintTop_toBottomOf="@id/delete"
+        app:layout_constraintBottom_toTopOf="@id/goal_steps"/>
 
     <TextView
         android:id="@+id/textView"
-        style="@style/Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Goal:"
-        android:textSize="14sp"
+        style="@style/GoalText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit" />
+        app:layout_constraintTop_toBottomOf="@+id/edit"
+        android:text="Goal:"/>
 
     <TextView
         android:id="@+id/goal_steps"
-        style="@style/Text"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="1234000"
+        style="@style/GoalText"
         android:textAlignment="textEnd"
-        android:textSize="14sp"
         app:layout_constraintTop_toTopOf="@+id/textView"
         app:layout_constraintStart_toEndOf="@id/textView"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="1234000"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

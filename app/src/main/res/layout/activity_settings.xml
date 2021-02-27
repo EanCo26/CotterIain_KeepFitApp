@@ -4,15 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
     tools:context=".SettingsActivity">
 
     <TextView
         android:id="@+id/notification_setting_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         style="@style/Text"
+        android:layout_margin="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:text="Push Notifications"/>
@@ -28,10 +25,8 @@
 
     <TextView
         android:id="@+id/goals_setting_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         style="@style/Text"
+        android:layout_margin="16dp"
         app:layout_constraintTop_toBottomOf="@+id/notification_setting_text"
         app:layout_constraintStart_toStartOf="parent"
         android:text="Allow Goals Editing"/>
@@ -47,10 +42,8 @@
 
     <TextView
         android:id="@+id/history_rec_setting_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         style="@style/Text"
+        android:layout_margin="16dp"
         app:layout_constraintTop_toBottomOf="@+id/goals_setting"
         app:layout_constraintStart_toStartOf="parent"
         android:text="Allow History Editing"/>
@@ -66,14 +59,11 @@
 
     <Button
         android:id="@+id/clear_history_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Text"
         android:layout_marginBottom="16dp"
-        android:padding="16dp"
+        android:backgroundTint="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="@color/red"
-        style="@style/Text"
         android:text="Clear History"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

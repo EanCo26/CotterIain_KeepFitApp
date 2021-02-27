@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
 
     private final String TAG = "My/" + MainActivity.class.getSimpleName();
 
+    private DateSystem dateSystem;
     private SharedData sharedData;
     private GoalDatabase goalDatabase;
     private HistoryDatabase historyDatabase;
@@ -60,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     private EditText stepsEdit;
     private ProgressBar progressBar;
 
-    private DateSystem dateSystem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +71,13 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         assignActivityElements();
         setRecyclerView();
         viewModelSetup();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boolean isGoalsEditable = sharedData.getBool(getString(R.string.setting_goals_editable), true);
+        goalAdapter.setEditable(isGoalsEditable);
     }
 
     private void assignActivityElements(){
@@ -92,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
 
     private void setStepsEdit(){
         //todo error appeared when number was exceedinly high - (java.lang.NumberFormatException: For input string: "6666000000")
+        steps = sharedData.getInt(getString(R.string.current_steps), 0);
+        stepsEdit.setText(Integer.toString(steps));
         stepsEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -122,13 +131,6 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView = (RecyclerView) findViewById(R.id.recycle_view);
         recyclerView.setLayoutManager(layoutManager);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        boolean isGoalsEditable = sharedData.getBool(getString(R.string.setting_goals_editable), true);
-        goalAdapter.setEditable(isGoalsEditable);
     }
 
     private void viewModelSetup(){
@@ -315,10 +317,6 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
 
     @Override
     public void onGoalClick(int itemIndex, GoalData goal){
-//        if(!currentDate.equals(oldDate)){
-//            sharedData.setString(getString(R.string.activity_date), currentDate);
-//        }
-
         int id = goal.getId();
         sharedData.setInt(getString(R.string.current_activity), id);
         activeGoal=goal;

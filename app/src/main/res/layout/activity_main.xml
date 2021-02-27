@@ -4,59 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/Text"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/add_goal"
-        app:layout_constraintBottom_toBottomOf="@id/add_goal"
-
-        android:text="Goal Management" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_goal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:clickable="true"
-        android:backgroundTint="@color/goal_grey"
-        android:src="@drawable/add_icon"
-        app:layout_constraintRight_toRightOf="@id/recycle_view"
-        app:layout_constraintBottom_toTopOf="@id/recycle_view" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycle_view"
-        android:layout_width="match_parent"
-        android:layout_height="136dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:id="@+id/day_status"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/add_goal">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_margin="16dp"
-            style="@style/Text"
-            android:textAlignment="center"
-            android:textSize="24sp"
+            style="@style/Title"
+            android:layout_margin="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -64,24 +26,21 @@
 
         <TextView
             android:id="@+id/header"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_margin="8dp"
             style="@style/Text"
-            android:textAlignment="center"
+            android:layout_margin="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@+id/title"
             tools:text="[GOAL NAME] - [GOAL]%" />
 
         <ProgressBar
             android:id="@+id/progress"
             android:layout_width="360dp"
             android:layout_height="280dp"
+            android:layout_margin="16dp"
             android:indeterminateOnly="false"
             android:max="100"
             android:progressDrawable="@drawable/progress_circle"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header"
@@ -90,7 +49,7 @@
         <ImageView
             android:id="@+id/divider"
             android:layout_width="200dp"
-            android:layout_height="1dp"
+            android:layout_height="2dp"
             android:background="@color/activity"
             app:layout_constraintEnd_toEndOf="@id/goal_number"
             app:layout_constraintStart_toStartOf="@id/goal_number"
@@ -99,15 +58,12 @@
 
         <EditText
             android:id="@+id/steps"
-            style="@style/Text"
+            style="@style/DisplayText"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="1dp"
             android:imeOptions="actionDone"
             android:inputType="number"
-            android:textSize="40sp"
-            android:textAlignment="center"
-            android:background="@color/background_grey"
+            android:background="@color/grey"
             app:layout_constraintBottom_toTopOf="@+id/divider"
             app:layout_constraintEnd_toEndOf="@+id/divider"
             app:layout_constraintStart_toStartOf="@+id/divider"
@@ -116,12 +72,7 @@
 
         <TextView
             android:id="@+id/goal_number"
-            style="@style/Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/steps"
-            android:textAlignment="center"
-            android:textSize="40sp"
+            style="@style/DisplayText"
             app:layout_constraintEnd_toEndOf="@+id/progress"
             app:layout_constraintStart_toStartOf="@+id/progress"
             app:layout_constraintTop_toBottomOf="@+id/divider"
@@ -130,15 +81,42 @@
 
         <Button
             android:id="@+id/counter_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Text"
             android:layout_margin="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/progress"
             app:layout_constraintBottom_toBottomOf="parent"
             android:backgroundTint="@color/red"
-            android:textColor="@color/white"
             android:text="Start Step Counter"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:src="@drawable/add_icon"
+        android:tint="@color/white"
+        app:layout_constraintRight_toRightOf="@id/recycle_view"
+        app:layout_constraintBottom_toTopOf="@id/recycle_view"
+        app:layout_constraintTop_toBottomOf="@+id/day_status"/>
+
+    <TextView
+        style="@style/Title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/add_goal"
+        app:layout_constraintTop_toTopOf="@id/add_goal"
+        app:layout_constraintBottom_toBottomOf="@id/add_goal"
+        android:text="Goal Management" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_goal"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
+import me.uos.cotteriain_keepfitapp.R;
 
 public class PopupWindow {
 
@@ -14,7 +15,7 @@ public class PopupWindow {
         this.dialogBuilder = dialogBuilder;
         this.dialog = dialog;
     }
-
+    
     public void showWindow(){ dialog.show(); }
     public void closeWindow(){ dialog.dismiss(); }
 }

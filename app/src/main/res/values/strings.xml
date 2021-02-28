@@ -3,10 +3,10 @@
     <string name="activity">Activity</string>
     <string name="history">History</string>
     <string name="settings">Settings</string>
-    <string name="pref_file_key">me.uos.cotteriain_keepfitapp.TrialKey</string>
-    <string name="current_activity">me.uos.cotteriain_keepfitapp.CurrentActivityIndex</string>
-    <string name="activity_date">me.uos.cotteriain_keepfitapp.ActivityDate</string>
-    <string name="current_steps">me.uos.cotteriain_keepfitapp.CurrentSteps</string>
-    <string name="setting_goals_editable">me.uos.cotteriain_keepfitapp.GoalsEditable</string>
-    <string name="setting_history_editable">me.uos.cotteriain_keepfitapp.HistoryEditable</string>
+    <string name="pref_file_key" translatable="false">me.uos.cotteriain_keepfitapp.TrialKey</string>
+    <string name="current_activity" translatable="false">me.uos.cotteriain_keepfitapp.CurrentActivityIndex</string>
+    <string name="activity_date" translatable="false">me.uos.cotteriain_keepfitapp.ActivityDate</string>
+    <string name="current_steps" translatable="false">me.uos.cotteriain_keepfitapp.CurrentSteps</string>
+    <string name="setting_goals_editable" translatable="false">me.uos.cotteriain_keepfitapp.GoalsEditable</string>
+    <string name="setting_history_editable" translatable="false">me.uos.cotteriain_keepfitapp.HistoryEditable</string>
 </resources>

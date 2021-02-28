@@ -60,6 +60,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             stepsTakenText = (TextView)itemView.findViewById(R.id.steps_num);
             goalStepsText = (TextView)itemView.findViewById(R.id.goal_steps_num);
             progressBar = (ProgressBar) itemView.findViewById(R.id.completion_bar);
+            progressBar.setProgress(0);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

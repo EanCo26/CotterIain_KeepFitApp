@@ -60,8 +60,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     private TextView goalText, headerText;
     private EditText stepsEdit;
     private ProgressBar progressBar;
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +100,10 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         //todo error appeared when number was exceedinly high - (java.lang.NumberFormatException: For input string: "6666000000")
         steps = sharedData.getInt(getString(R.string.current_steps), 0);
         stepsEdit.setText(Integer.toString(steps));
+        stepsEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { stepsEdit.setCursorVisible(true); }
+        });
         stepsEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -112,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                 if(stepsEdit.length()>0)
                     stepsChanged = Integer.parseInt(stepsEdit.getText().toString());
                 changeToSteps(stepsChanged);
+                stepsEdit.setCursorVisible(false);
             }
         });
     }
@@ -254,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         });
     }
 
-    private void editGoalPopup(int itemIndex, GoalData goal){
+    private void editGoalPopup(GoalData goal){
         View popupLayout = getLayoutInflater().inflate(R.layout.edit_popup, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setView(popupLayout);
@@ -285,6 +289,31 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                     });
                     popupWindow.closeWindow();
                 }
+            }
+        });
+    }
+
+    private void deleteGoalPopup(GoalData goal) {
+        View popupLayout = getLayoutInflater().inflate(R.layout.clear_history_popup, null);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setView(popupLayout);
+        PopupWindow popupWindow = new PopupWindow(dialogBuilder, dialogBuilder.create());
+        popupWindow.showWindow();
+
+        TextView title = (TextView) popupLayout.findViewById(R.id.title);
+        title.setText("Please Confirm Deleting of Goal");
+
+        Button popup_button = (Button) popupLayout.findViewById(R.id.yes);
+        popup_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        goalDatabase.goalDao().deleteGoal(goal);
+                    }
+                });
+                popupWindow.closeWindow();
             }
         });
     }
@@ -326,16 +355,11 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
 
     @Override
     public void onEditClick(int itemIndex, GoalData goal) {
-        editGoalPopup(itemIndex, goal);
+        editGoalPopup(goal);
     }
 
     @Override
     public void onDeleteClick(int itemIndex, GoalData goal) {
-        MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                goalDatabase.goalDao().deleteGoal(goal);
-            }
-        });
+        deleteGoalPopup(goal);
     }
 }

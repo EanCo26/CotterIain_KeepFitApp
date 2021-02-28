@@ -20,7 +20,9 @@
     <TextView
         android:id="@+id/name"
         android:layout_width="0dp"
+        android:layout_margin="8dp"
         style="@style/Text"
+        android:textAlignment="textStart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/steps_layout"
         app:layout_constraintTop_toBottomOf="@id/date"
@@ -39,6 +41,7 @@
         <TextView
             android:id="@+id/steps"
             style="@style/Text"
+            android:textAlignment="textStart"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:text="Steps: "/>
@@ -48,27 +51,26 @@
             style="@style/Text"
             app:layout_constraintStart_toEndOf="@id/steps"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="7500"/>
+            tools:text="7500"/>
 
         <TextView
             android:id="@+id/goal_steps"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             style="@style/Text"
-            app:layout_constraintStart_toStartOf="@id/steps"
+            android:textAlignment="textStart"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="@id/steps"
             app:layout_constraintTop_toBottomOf="@id/steps"
             android:text="Goal: "/>
 
         <TextView
             android:id="@+id/goal_steps_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             style="@style/Text"
             app:layout_constraintStart_toEndOf="@id/steps"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/goal_steps"
-            android:text="10000"/>
+            tools:text="10000"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar

@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/date"
         android:layout_margin="8dp"
-        style="@style/Text"
+        style="@style/ElementText"
         android:textSize="12sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,7 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_margin="8dp"
-        style="@style/Text"
+        style="@style/ElementText"
         android:textAlignment="textStart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/steps_layout"
@@ -40,7 +40,7 @@
 
         <TextView
             android:id="@+id/steps"
-            style="@style/Text"
+            style="@style/ElementText"
             android:textAlignment="textStart"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -48,7 +48,7 @@
 
         <TextView
             android:id="@+id/steps_num"
-            style="@style/Text"
+            style="@style/ElementText"
             app:layout_constraintStart_toEndOf="@id/steps"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="7500"/>
@@ -57,7 +57,7 @@
             android:id="@+id/goal_steps"
             android:layout_width="0dp"
             android:layout_marginTop="16dp"
-            style="@style/Text"
+            style="@style/ElementText"
             android:textAlignment="textStart"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="@id/steps"
@@ -66,7 +66,7 @@
 
         <TextView
             android:id="@+id/goal_steps_num"
-            style="@style/Text"
+            style="@style/ElementText"
             app:layout_constraintStart_toEndOf="@id/steps"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/goal_steps"
@@ -81,8 +81,19 @@
         android:indeterminateOnly="false"
         android:max="100"
         android:progressDrawable="@drawable/progress_circle"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/edit"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:progress="75"/>
+
+    <ImageView
+        android:id="@+id/edit"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="4dp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:src="@drawable/pencil_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

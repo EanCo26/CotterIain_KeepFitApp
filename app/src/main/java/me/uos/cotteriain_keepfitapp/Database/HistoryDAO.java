@@ -14,7 +14,7 @@ import me.uos.cotteriain_keepfitapp.HistorySettings.HistoryData;
 @Dao
 public interface HistoryDAO {
 
-    @Query("SELECT * FROM history")
+    @Query("SELECT * FROM history ORDER BY id DESC")
     LiveData<List<HistoryData>> loadAllHistory();
 
     @Insert

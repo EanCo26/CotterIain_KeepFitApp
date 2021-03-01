@@ -1,16 +1,13 @@
 package me.uos.cotteriain_keepfitapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -56,9 +53,15 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView = (RecyclerView)findViewById(R.id.history_list);
         recyclerView.setLayoutManager(layoutManager);
-        historyAdapter = new HistoryAdapter(hCl);
+        historyAdapter = new HistoryAdapter(hCl, sharedData.getBool(getString(R.string.setting_history_editable), getResources().getBoolean(R.bool.default_history_editable)));
 
         setupViewModel();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        historyAdapter.setEditable(sharedData.getBool(getString(R.string.setting_history_editable), getResources().getBoolean(R.bool.default_history_editable)));
     }
 
     private void setupViewModel(){
@@ -67,12 +70,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         viewModel.getHistoryList().observe(this, new Observer<List<HistoryData>>() {
             @Override
             public void onChanged(List<HistoryData> historyDataList) {
-                List<HistoryData> inverseList = new ArrayList<>();
-                for(int i = historyDataList.size()-1; i>=0; i--){
-                    inverseList.add(historyDataList.get(i));
-                }
-
-                historyAdapter.setHistoryData(inverseList);
+                historyAdapter.setHistoryList(historyDataList);
                 recyclerView.swapAdapter(historyAdapter, true);
             }
         });
@@ -96,8 +94,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 //        }
 //    }
 
-    private void editHistoryItem(int itemIndex, HistoryData historyData){
-        View popupLayout = getLayoutInflater().inflate(R.layout.edit_history_popup, null);
+    private void editHistoryItem(HistoryData historyData){
+        View popupLayout = getLayoutInflater().inflate(R.layout.history_popup, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setView(popupLayout);
         PopupWindow popupWindow = new PopupWindow(dialogBuilder, dialogBuilder.create());
@@ -143,10 +141,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     }
 
     @Override
-    public void onHistoryClick(int itemIndex, HistoryData historyData) {
-        Boolean isHistoryEditable = sharedData.getBool(getString(R.string.setting_history_editable), true);
-        if(isHistoryEditable){
-            editHistoryItem(itemIndex, historyData);
-        }
+    public void onHistoryClick(HistoryData historyData) {
+        editHistoryItem(historyData);
     }
 }

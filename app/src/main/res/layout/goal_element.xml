@@ -40,7 +40,7 @@
 
     <TextView
         android:id="@+id/textView"
-        style="@style/GoalText"
+        style="@style/ElementText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit"
@@ -50,7 +50,7 @@
         android:id="@+id/goal_steps"
         android:layout_width="0dp"
         android:layout_marginStart="4dp"
-        style="@style/GoalText"
+        style="@style/ElementText"
         app:layout_constraintTop_toTopOf="@+id/textView"
         app:layout_constraintStart_toEndOf="@id/textView"
         app:layout_constraintEnd_toEndOf="parent"

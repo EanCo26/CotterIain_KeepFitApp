@@ -6,10 +6,8 @@ import me.uos.cotteriain_keepfitapp.Database.HistoryDatabase;
 import me.uos.cotteriain_keepfitapp.General.MyExecutor;
 import me.uos.cotteriain_keepfitapp.General.PopupWindow;
 import me.uos.cotteriain_keepfitapp.General.SharedData;
-import me.uos.cotteriain_keepfitapp.HistorySettings.HistoryData;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,13 +20,9 @@ public class SettingsActivity extends AppCompatActivity {
 
     //todo - do the same for push notification as goals editable
 
-    private boolean isGoalsEditable;
-    private Switch goalSetting;
-
-    private boolean isHistoryEditable;
-    private Switch historySetting;
-
+    private Switch goalSetting, historySetting;
     private Button clearHistoryButton;
+
     private HistoryDatabase historyDatabase;
 
     private SharedData sharedData;
@@ -38,41 +32,32 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        goalSetting = (Switch)findViewById(R.id.goals_setting);
-        historySetting = (Switch)findViewById(R.id.history_rec_setting);
-        clearHistoryButton = (Button)findViewById(R.id.clear_history_button);
-
         historyDatabase = HistoryDatabase.getsInstance(getApplicationContext());
         sharedData = new SharedData(this.getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE));
 
-        isGoalsEditable = sharedData.getBool(getString(R.string.setting_goals_editable), goalSetting.isChecked());
-        goalSetting.setChecked(isGoalsEditable);
+        goalSetting = (Switch)findViewById(R.id.goals_setting);
+        goalSetting.setChecked(sharedData.getBool(getString(R.string.setting_goals_editable), getResources().getBoolean(R.bool.default_goal_editable)));
         goalSetting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                sharedData.setBool(getString(R.string.setting_goals_editable), isChecked);
-            }
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { sharedData.setBool(getString(R.string.setting_goals_editable), isChecked); }
         });
 
-        isHistoryEditable = isGoalsEditable = sharedData.getBool(getString(R.string.setting_history_editable), historySetting.isChecked());
-        historySetting.setChecked(isHistoryEditable);
+        historySetting = (Switch)findViewById(R.id.history_rec_setting);
+        historySetting.setChecked(sharedData.getBool(getString(R.string.setting_history_editable), getResources().getBoolean(R.bool.default_history_editable)));
         historySetting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                sharedData.setBool(getString(R.string.setting_history_editable), isChecked);
-            }
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { sharedData.setBool(getString(R.string.setting_history_editable), isChecked); }
         });
 
+        clearHistoryButton = (Button)findViewById(R.id.clear_history_button);
         clearHistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                clearHistory();
-            }
+            public void onClick(View v) { clearHistory(); }
         });
     }
 
     private void clearHistory() {
-        View popupLayout = getLayoutInflater().inflate(R.layout.clear_history_popup, null);
+        View popupLayout = getLayoutInflater().inflate(R.layout.clear_popup, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setView(popupLayout);
         PopupWindow popupWindow = new PopupWindow(dialogBuilder, dialogBuilder.create());

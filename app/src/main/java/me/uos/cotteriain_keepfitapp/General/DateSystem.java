@@ -23,7 +23,10 @@ public class DateSystem {
         this.old = old;
     }
 
-    public Boolean datesMatch(){ return current.equals(old); }
+    public Boolean datesMatch(){
+//        return false;
+        return current.equals(old);
+    }
 
     public String getCurrentDate() { return current; }
     public String getOldDate() { return old; }

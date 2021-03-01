@@ -24,7 +24,7 @@
     <style name="DisplayText" parent="Text">
         <item name="android:textSize">40sp</item>
     </style>
-    <style name="GoalText" parent="Text">
+    <style name="ElementText" parent="Text">
         <item name="android:textSize">14sp</item>
     </style>
 </resources>

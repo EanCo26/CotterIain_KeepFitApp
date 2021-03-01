@@ -20,7 +20,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
     private GoalClickListener goalClickListener;
 
     private int goalId;
-    private int selectedViewIndex = Integer.MAX_VALUE;
+    private int selectedViewIndex = -1;
 
     private boolean editable = true;
 
@@ -35,7 +35,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
         holders.clear();
         this.goalList = goalList;
         this.goalId = goalId;
-        this.selectedViewIndex = Integer.MAX_VALUE;
+        this.selectedViewIndex = -1;
         notifyDataSetChanged();
     }
 
@@ -73,7 +73,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
         if(this.selectedViewIndex == selectedViewIndex)
             return;
 
-        if(this.selectedViewIndex != Integer.MAX_VALUE)
+        if(this.selectedViewIndex >= 0 )
             holders.get(this.selectedViewIndex).setActive(false);
 
         goalId = holders.get(selectedViewIndex).getGoalData().getId();
@@ -106,14 +106,14 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
             editIcon = itemView.findViewById(R.id.edit);
             editIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) { goalClickListener.onEditClick(getAdapterPosition(), goal); }
+                public void onClick(View v) { goalClickListener.onEditClick(goal); }
             });
             editIcon.setVisibility(editable ? View.VISIBLE : View.INVISIBLE);
 
             deleteIcon = itemView.findViewById(R.id.delete);
             deleteIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) { goalClickListener.onDeleteClick(getAdapterPosition(), goal); }
+                public void onClick(View v) { goalClickListener.onDeleteClick(goal); }
             });
         }
 
@@ -137,7 +137,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
 
     public interface GoalClickListener{
         void onGoalClick(int itemIndex, GoalData goal);
-        void onEditClick(int itemIndex, GoalData goal);
-        void onDeleteClick(int itemIndex, GoalData goal);
+        void onEditClick(GoalData goal);
+        void onDeleteClick(GoalData goal);
     }
 }

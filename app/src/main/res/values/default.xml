@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pref_file_key" translatable="false">me.uos.cotteriain_keepfitapp.TrialKey</string>
+
+    <string name="current_activity" translatable="false">me.uos.cotteriain_keepfitapp.CurrentActivityIndex</string>
     <integer name="default_activity">-1</integer>
+
+    <string name="activity_date" translatable="false">me.uos.cotteriain_keepfitapp.ActivityDate</string>
+    <string name="default_date">no_date</string>
+
+    <string name="current_steps" translatable="false">me.uos.cotteriain_keepfitapp.CurrentSteps</string>
+    <integer name="default_steps">0</integer>
+
+    <string name="setting_goals_editable" translatable="false">me.uos.cotteriain_keepfitapp.GoalsEditable</string>
+    <bool name="default_goal_editable">true</bool>
+
+    <string name="setting_history_editable" translatable="false">me.uos.cotteriain_keepfitapp.HistoryEditable</string>
+    <bool name="default_history_editable">true</bool>
 </resources>

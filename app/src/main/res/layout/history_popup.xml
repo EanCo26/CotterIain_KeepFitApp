@@ -14,11 +14,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="24sp"
-        android:text="Edit Goal"/>
+        android:text="Edit History"/>
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="96dp"
+        android:layout_width="104dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:text="Goal Name:"
@@ -33,18 +33,19 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:hint="Enter Name..."
+        android:hint="Enter goal name..."
         android:backgroundTint="@color/red"
+        android:maxLength="16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/name"
         app:layout_constraintTop_toBottomOf="@id/title"/>
 
     <TextView
         android:id="@+id/steps"
-        android:layout_width="96dp"
+        android:layout_width="104dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:text="Goal Steps:"
+        android:text="Steps Taken:"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/edit_steps"
@@ -56,24 +57,50 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:hint="Enter Steps..."
+        android:hint="Enter steps taken..."
         android:backgroundTint="@color/red"
         android:inputType="number"
+        android:maxLength="8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/steps"
         app:layout_constraintTop_toBottomOf="@id/edit_name" />
 
+    <TextView
+        android:id="@+id/goal_steps"
+        android:layout_width="104dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="Goal Steps:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/edit_goal_steps"
+        app:layout_constraintBottom_toBottomOf="@id/edit_goal_steps" />
+
+    <EditText
+        android:id="@+id/edit_goal_steps"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="Enter goal steps..."
+        android:backgroundTint="@color/red"
+        android:inputType="number"
+        android:maxLength="8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/goal_steps"
+        app:layout_constraintTop_toBottomOf="@id/edit_steps" />
 
     <Button
         android:id="@+id/edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/red"
         android:text="Edit"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_steps"/>
+        app:layout_constraintTop_toBottomOf="@+id/edit_goal_steps"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

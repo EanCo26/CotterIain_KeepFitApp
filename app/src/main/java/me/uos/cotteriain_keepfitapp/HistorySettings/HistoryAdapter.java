@@ -3,6 +3,7 @@ package me.uos.cotteriain_keepfitapp.HistorySettings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,12 +18,20 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     private List<HistoryData> historyList;
     private HistoryClickListener historyClickListener;
 
-    public HistoryAdapter(HistoryClickListener historyClickListener) {
+    private boolean editable;
+
+    public HistoryAdapter(HistoryClickListener historyClickListener, boolean editable) {
         this.historyClickListener = historyClickListener;
+        this.editable = editable;
     }
 
-    public void setHistoryData(List<HistoryData> historyList){
+    public void setHistoryList(List<HistoryData> historyList){
         this.historyList = historyList;
+        notifyDataSetChanged();
+    }
+
+    public void setEditable(boolean editable){
+        this.editable = editable;
         notifyDataSetChanged();
     }
 
@@ -45,11 +54,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView goalNameText;
-        private TextView dateText;
-        private TextView stepsTakenText;
-        private TextView goalStepsText;
+        private TextView goalNameText, dateText, stepsTakenText, goalStepsText;
         private ProgressBar progressBar;
+        private ImageView editIcon;
         private HistoryData historyData;
 
         public ViewHolder(@NonNull View itemView) {
@@ -62,10 +69,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             progressBar = (ProgressBar) itemView.findViewById(R.id.completion_bar);
             progressBar.setProgress(0);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            editIcon = itemView.findViewById(R.id.edit);
+            editIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) { historyClickListener.onHistoryClick(getAdapterPosition(), historyData); }
+                public void onClick(View v) { historyClickListener.onHistoryClick(historyData); }
             });
+            editIcon.setVisibility(editable ? View.VISIBLE : View.INVISIBLE);
         }
 
         private void setHistoryData(HistoryData historyData){
@@ -81,6 +90,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     }
 
     public interface HistoryClickListener{
-        void onHistoryClick(int itemIndex, HistoryData historyData);
+        void onHistoryClick( HistoryData historyData);
     }
 }

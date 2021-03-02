@@ -11,9 +11,7 @@ import java.util.concurrent.Executors;
 import me.uos.cotteriain_keepfitapp.R;
 
 public class DateSystem {
-    private static final Object LOCK = new Object();
-    private static DateSystem sInstance;
-    private String current;
+    private static String current;
     private String old;
 
     private SharedData sharedData;

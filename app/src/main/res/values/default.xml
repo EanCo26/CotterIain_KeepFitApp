@@ -16,4 +16,7 @@
 
     <string name="setting_history_editable" translatable="false">me.uos.cotteriain_keepfitapp.HistoryEditable</string>
     <bool name="default_history_editable">true</bool>
+
+    <integer name="steps_character_limit">7</integer>
+    <integer name="name_character_limit">15</integer>
 </resources>

@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     private TextView goalText, headerNameText, headerPercentText;
     private EditText stepsEdit;
     private ProgressBar progressBar;
+
+    private List<String> goalNames = new ArrayList<>();
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,15 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         goalAdapter.setEditable(isGoalsEditable);
     }
 
+    private void setPersistentData(){
+        sharedData = new SharedData(this.getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE));
+        Date calendar = Calendar.getInstance().getTime();
+        dateSystem = new DateSystem(new SimpleDateFormat("dd/MM/yyyy").format(calendar),
+                sharedData.getString(getString(R.string.activity_date), getString(R.string.activity_date)));
+        goalDatabase = GoalDatabase.getsInstance(getApplicationContext());
+        historyDatabase = HistoryDatabase.getsInstance(getApplicationContext());
+    }
+
     private void assignActivityElements(){
         headerNameText = (TextView) findViewById(R.id.header_name);
         headerPercentText = (TextView) findViewById(R.id.header_percent);
@@ -92,46 +105,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
             @Override
             public void onClick(View v) { goalPopup(null); }
         });
-    }
 
-    private void setStepsEdit(){
-        steps = sharedData.getInt(getString(R.string.current_steps), getResources().getInteger(R.integer.default_steps));
-        stepsEdit.setText(Integer.toString(steps));
-        stepsEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { stepsEdit.setCursorVisible(true); }
-        });
-        stepsEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-            @Override
-            public void afterTextChanged(Editable s) {
-                String input = stepsEdit.getText().toString();
-                int stepsChanged = 0;
-
-                if(input.length() > 9){
-                    input = Integer.toString(steps);
-                    stepsEdit.setText(input);
-                }
-                if(input.length()>0)
-                    stepsChanged = Integer.parseInt(input);
-                changeToSteps(stepsChanged);
-
-                stepsEdit.setCursorVisible(false);
-            }
-        });
-    }
-
-    private void setPersistentData(){
-        sharedData = new SharedData(this.getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE));
-        Date calendar = Calendar.getInstance().getTime();
-        dateSystem = new DateSystem(new SimpleDateFormat("dd/MM/yyyy").format(calendar),
-                sharedData.getString(getString(R.string.activity_date), getString(R.string.activity_date)));
-        goalDatabase = GoalDatabase.getsInstance(getApplicationContext());
-        historyDatabase = HistoryDatabase.getsInstance(getApplicationContext());
+        recyclerView = (RecyclerView) findViewById(R.id.recycle_view);
     }
 
     private void setRecyclerView(){
@@ -139,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         goalAdapter = new GoalAdapter(gCL, isGoalsEditable);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerView = (RecyclerView) findViewById(R.id.recycle_view);
         recyclerView.setLayoutManager(layoutManager);
     }
 
@@ -150,20 +124,19 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
             @Override
             public void onChanged(List<GoalData> goalDataList) {
                 int id = sharedData.getInt(getString(R.string.current_activity), getResources().getInteger(R.integer.default_activity));
-
-                int activeGoalIndex = searchGoalList(goalDataList, id);
-                if(activeGoalIndex != -1){
-                    activeGoal = goalDataList.get(activeGoalIndex);
+                for (GoalData goal: goalDataList){
+                    goalNames.add(goal.getName());
+                    if(goal.getId() == id)
+                        activeGoal = goal;
                 }
 
                 if(dateSystem.datesMatch())
-                {
                     setGoalProgressUI();
-                }
                 else{
                     recordHistory();
                     resetActiveGoalData();
                 }
+
                 id = sharedData.getInt(getString(R.string.current_activity), getResources().getInteger(R.integer.default_activity));
                 goalAdapter.setGoalList(goalDataList, id);
                 recyclerView.swapAdapter(goalAdapter, true);
@@ -173,30 +146,40 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         });
     }
 
-    private int searchGoalList(List<GoalData> goalDataList, int id){
-        int leftmost = 0;
-        int rightmost = goalDataList.size()-1;
+    private void setStepsEdit(){
+        steps = sharedData.getInt(getString(R.string.current_steps), getResources().getInteger(R.integer.default_steps));
 
-        while (leftmost <= rightmost){
-            int midpoint = leftmost + ((rightmost - leftmost) /2);
-            if (goalDataList.get(midpoint).getId() == id){
-                return midpoint;
-            }
-            else if(id < goalDataList.get(midpoint).getId()){
-                rightmost = midpoint -1;
-            }
-            else if(id > goalDataList.get(midpoint).getId()){
-                leftmost = midpoint + 1;
-            }
-        }
-        return -1;
-    }
+        stepsEdit.setText(Integer.toString(steps));
+        stepsEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { stepsEdit.setCursorVisible(true); }
+        });
 
-    private void resetActiveGoalData(){
-        dateSystem.setOldDate(dateSystem.getCurrentDate());
-        sharedData.setString(getString(R.string.activity_date), dateSystem.getCurrentDate());
-        sharedData.setInt(getString(R.string.current_steps), 0);
-        sharedData.setInt(getString(R.string.current_activity), Integer.MAX_VALUE);
+        stepsEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(stepsEdit.hasFocus())
+                {
+                    String input = stepsEdit.getText().toString();
+
+                    if (input.length() > 0) {
+                        steps = Integer.parseInt(input);
+                        sharedData.setInt(getString(R.string.current_steps), steps);
+                    }
+                    else{
+                        stepsEdit.setText("0");
+                        sharedData.setInt(getString(R.string.current_steps), 0);
+                    }
+                }
+                stepsEdit.setCursorVisible(false);
+                setGoalProgressUI();
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
     }
 
     private void recordHistory(){
@@ -204,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
             String goalName = activeGoal.getName();
             steps = sharedData.getInt(getString(R.string.current_steps), getResources().getInteger(R.integer.default_steps));
             int goalSteps = activeGoal.getSteps();
-            int percent = (steps * 100 / goalSteps <= 100) ? steps * 100 / goalSteps : 100;
+            int percent = steps * 100 / goalSteps;
             HistoryData newHistoryData = new HistoryData(dateSystem.getOldDate(), goalName, steps, goalSteps, percent);
 
             MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
@@ -214,6 +197,13 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                 }
             });
         }
+    }
+
+    private void resetActiveGoalData(){
+        dateSystem.setOldDate(dateSystem.getCurrentDate());
+        sharedData.setString(getString(R.string.activity_date), dateSystem.getCurrentDate());
+        sharedData.setInt(getString(R.string.current_steps), 0);
+        sharedData.setInt(getString(R.string.current_activity), -1);
     }
 
     private void setGoalProgressUI(){
@@ -229,14 +219,9 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         }
     }
 
-    private void changeToSteps(int stepsChanged){
-        steps = stepsChanged;
-        sharedData.setInt(getString(R.string.current_steps), steps);
-        setGoalProgressUI();
-    }
-
     private void goalPopup(GoalData goal){
         boolean isCreating = goal == null;
+
         View popupLayout = getLayoutInflater().inflate(R.layout.goal_popup, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setView(popupLayout);
@@ -244,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         popupWindow.showWindow();
 
         EditText name_field = (EditText) popupLayout.findViewById(R.id.name);
-        EditText steps_field = (EditText) popupLayout.findViewById(R.id.steps);
+        EditText goal_steps_field = (EditText) popupLayout.findViewById(R.id.steps);
         Button popup_button = (Button) popupLayout.findViewById(R.id.button);
 
         if(!isCreating){
@@ -252,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
             title.setText("Edit Goal");
 
             name_field.setText(goal.getName());
-            steps_field.setText(Integer.toString(goal.getSteps()));
+            goal_steps_field.setText(Integer.toString(goal.getSteps()));
 
             popup_button.setText("Edit");
         }
@@ -260,30 +245,38 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         popup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Boolean hasName = !name_field.getText().toString().isEmpty(),
-                        hasSteps = !steps_field.getText().toString().isEmpty();
+                String nameText = name_field.getText().toString(),
+                        goalStepsText = goal_steps_field.getText().toString();
 
-                if (hasName && hasSteps) {
-                    if(isCreating) {
-                        MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                goalDatabase.goalDao().createGoal(new GoalData(name_field.getText().toString(),
-                                        Integer.parseInt(steps_field.getText().toString())));
-                            }
-                        });
-                    }else{
-                        goal.setName(name_field.getText().toString());
-                        goal.setSteps(Integer.parseInt(steps_field.getText().toString()));
-                        MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                goalDatabase.goalDao().editGoal(goal);
-                            }
-                        });
-                    }
-                    popupWindow.closeWindow();
+                boolean isAllowed = true;
+                if(nameText.isEmpty()) { name_field.setError("Name needs input"); isAllowed = false;}
+                if(goalStepsText.isEmpty()){ goal_steps_field.setError("Steps needs input"); isAllowed = false; }
+                if(goalNames.contains(nameText)){
+                    if(isCreating){ name_field.setError("Name matches other"); isAllowed = false; }
+                    else if (!isCreating && !nameText.equals(goal.getName())){ name_field.setError("Name matches other"); isAllowed = false; }
                 }
+                if(!isAllowed)
+                    return;
+
+                if(isCreating) {
+                    MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            goalDatabase.goalDao().createGoal(new GoalData(nameText,
+                                    Integer.parseInt(goalStepsText)));
+                        }
+                    });
+                }else{
+                    goal.setName(nameText);
+                    goal.setSteps(Integer.parseInt(goalStepsText));
+                    MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            goalDatabase.goalDao().editGoal(goal);
+                        }
+                    });
+                }
+                popupWindow.closeWindow();
             }
         });
     }
@@ -318,23 +311,18 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         getMenuInflater().inflate(R.menu.toolbar, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemID = item.getItemId();
         Intent intent = null;
-        int inAnim = android.R.anim.slide_in_left;
-        int outAnim = android.R.anim.slide_out_right;
         switch(itemID){
-            case R.id.history:
-                intent = new Intent(this, HistoryActivity.class);
-                break;
             case R.id.settings:
                 intent = new Intent(this, SettingsActivity.class);
                 break;
         }
         if(intent != null) {
             startActivity(intent);
-            overridePendingTransition(inAnim, outAnim);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -342,19 +330,15 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     @Override
     public void onGoalClick(int itemIndex, GoalData goal){
         int id = goal.getId();
-        sharedData.setInt(getString(R.string.current_activity), id);
         activeGoal=goal;
+        sharedData.setInt(getString(R.string.current_activity), id);
+
         goalAdapter.setActiveGoal(itemIndex);
         setGoalProgressUI();
     }
 
     @Override
-    public void onEditClick(GoalData goal) {
-        goalPopup(goal);
-    }
-
+    public void onEditClick(GoalData goal) { goalPopup(goal); }
     @Override
-    public void onDeleteClick(GoalData goal) {
-        deleteGoalPopup(goal);
-    }
+    public void onDeleteClick(GoalData goal) { deleteGoalPopup(goal); }
 }

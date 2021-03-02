@@ -1,5 +1,6 @@
 package me.uos.cotteriain_keepfitapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import me.uos.cotteriain_keepfitapp.Database.HistoryDatabase;
@@ -8,7 +9,10 @@ import me.uos.cotteriain_keepfitapp.General.PopupWindow;
 import me.uos.cotteriain_keepfitapp.General.SharedData;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -78,21 +82,17 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-//    public void changeActivity(View view){
-//        Intent intent = null;
-//        int inAnim = android.R.anim.slide_in_left;
-//        int outAnim = android.R.anim.slide_out_right;
-//        switch(view.getId()){
-//            case R.id.navi_activity:
-//                intent = new Intent(this, MainActivity.class);
-//                break;
-//            case R.id.navi_history:
-//                intent = new Intent(this, HistoryActivity.class);
-//                break;
-//        }
-//        if(intent != null) {
-//            startActivity(intent);
-//            overridePendingTransition(inAnim, outAnim);
-//        }
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        MenuItem item =  menu.findItem(R.id.settings);
+        item.setIcon(R.drawable.baseline_settings_white_48);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
+    }
 }

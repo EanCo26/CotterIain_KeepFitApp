@@ -2,12 +2,14 @@ package me.uos.cotteriain_keepfitapp;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +34,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
     private SharedData sharedData;
     private HistoryDatabase historyDatabase;
+
+    private List<String> historyNames = new ArrayList<>();
 
     private RecyclerView recyclerView;
     private HistoryAdapter historyAdapter;
@@ -70,6 +74,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         viewModel.getHistoryList().observe(this, new Observer<List<HistoryData>>() {
             @Override
             public void onChanged(List<HistoryData> historyDataList) {
+                for (HistoryData historyData: historyDataList) {
+                    historyNames.add(historyData.getGoalName());
+                }
                 historyAdapter.setHistoryList(historyDataList);
                 recyclerView.swapAdapter(historyAdapter, true);
             }
@@ -114,34 +121,36 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         edit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Boolean hasName= !name_field.getText().toString().isEmpty(),
-                        hasSteps = !steps_field.getText().toString().isEmpty(),
-                        hasGoalSteps = !goal_steps_field.getText().toString().isEmpty();
+                String nameText = name_field.getText().toString(),
+                    stepsText = steps_field.getText().toString(),
+                    goalStepsText = goal_steps_field.getText().toString();
 
-                if(hasName&&hasSteps&&hasGoalSteps) {
-                    historyData.setGoalName(name_field.getText().toString());
-                    int steps = Integer.parseInt(steps_field.getText().toString()),
-                            goalSteps = Integer.parseInt(goal_steps_field.getText().toString());
-                    historyData.setStepsTaken(steps);
-                    historyData.setGoalSteps(goalSteps);
-                    int percent = (steps * 100 / goalSteps <= 100)? steps * 100 / goalSteps : 100;
-                    historyData.setPercentageToGoal(percent);
+                if(nameText.isEmpty())
+                    name_field.setError("Name needs input");
+                if(stepsText.isEmpty())
+                    steps_field.setError("Steps needs input");
+                if(goalStepsText.isEmpty())
+                    goal_steps_field.setError("Goal needs input");
+                if(nameText.isEmpty() || stepsText.isEmpty() || goalStepsText.isEmpty())
+                    return;
 
-                    MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            historyDatabase.historyDAO().editHistory(historyData);
-                        }
-                    });
-                    popupWindow.closeWindow();
-                }
+                int iSteps = Integer.parseInt(stepsText),
+                        iGoalSteps = Integer.parseInt(goalStepsText);
+                historyData.setGoalName(nameText);
+                historyData.setStepsTaken(iSteps);
+                historyData.setGoalSteps(iGoalSteps);
+                int percent = iSteps * 100 / iGoalSteps;
+                historyData.setPercentageToGoal(percent);
+
+                MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
+                    @Override
+                    public void run() { historyDatabase.historyDAO().editHistory(historyData); }
+                });
+                popupWindow.closeWindow();
             }
         });
-
     }
 
     @Override
-    public void onHistoryClick(HistoryData historyData) {
-        editHistoryItem(historyData);
-    }
+    public void onHistoryClick(HistoryData historyData) { editHistoryItem(historyData); }
 }

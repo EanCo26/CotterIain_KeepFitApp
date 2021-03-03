@@ -1,6 +1,5 @@
-package me.uos.cotteriain_keepfitapp.HistorySettings;
+package me.uos.cotteriain_keepfitapp.History;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;

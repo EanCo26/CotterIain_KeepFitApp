@@ -1,4 +1,4 @@
-package me.uos.cotteriain_keepfitapp.GoalSettings;
+package me.uos.cotteriain_keepfitapp.Goal;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;

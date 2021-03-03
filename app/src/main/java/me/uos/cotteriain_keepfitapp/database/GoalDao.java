@@ -9,7 +9,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
-import me.uos.cotteriain_keepfitapp.GoalSettings.GoalData;
+import me.uos.cotteriain_keepfitapp.Goal.GoalData;
 
 @Dao
 public interface GoalDao {

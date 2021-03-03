@@ -1,4 +1,4 @@
-package me.uos.cotteriain_keepfitapp.GoalSettings;
+package me.uos.cotteriain_keepfitapp.Goal;
 
 import android.view.LayoutInflater;
 import android.view.View;

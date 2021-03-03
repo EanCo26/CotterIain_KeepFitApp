@@ -13,10 +13,10 @@ import me.uos.cotteriain_keepfitapp.General.DateSystem;
 import me.uos.cotteriain_keepfitapp.General.MyExecutor;
 import me.uos.cotteriain_keepfitapp.General.PopupWindow;
 import me.uos.cotteriain_keepfitapp.General.SharedData;
-import me.uos.cotteriain_keepfitapp.GoalSettings.GoalAdapter;
-import me.uos.cotteriain_keepfitapp.GoalSettings.GoalData;
-import me.uos.cotteriain_keepfitapp.GoalSettings.GoalViewModel;
-import me.uos.cotteriain_keepfitapp.HistorySettings.HistoryData;
+import me.uos.cotteriain_keepfitapp.Goal.GoalAdapter;
+import me.uos.cotteriain_keepfitapp.Goal.GoalData;
+import me.uos.cotteriain_keepfitapp.Goal.GoalViewModel;
+import me.uos.cotteriain_keepfitapp.History.HistoryData;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +24,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     private GoalData activeGoal = null;
     private int steps = 0;
 
-    private TextView goalText, headerText;
+    private TextView goalText, headerText, headerPercent;
     private EditText stepsEdit;
     private ProgressBar progressBar;
 
@@ -91,7 +90,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     }
 
     private void assignActivityElements(){
-        headerText = (TextView) findViewById(R.id.header);
+        headerText = (TextView) findViewById(R.id.header_name);
+        headerPercent = (TextView) findViewById(R.id.header_percent);
         goalText = (TextView) findViewById(R.id.goal_number);
         stepsEdit = (EditText) findViewById(R.id.steps);
         steps = sharedData.getInt(getString(R.string.current_steps), getResources().getInteger(R.integer.default_steps));
@@ -219,7 +219,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
             int percent = steps * 100 / goalSteps;
 
             progressBar.setProgress(percent);
-            headerText.setText(activeGoal.getName() + " - " + Integer.toString(percent) + "%");
+            headerText.setText(activeGoal.getName());
+            headerPercent.setText(Integer.toString(percent) + "%");
             goalText.setText(Integer.toString(goalSteps));
         }
     }

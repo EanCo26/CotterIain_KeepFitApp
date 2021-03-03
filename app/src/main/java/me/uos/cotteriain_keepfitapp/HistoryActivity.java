@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -28,13 +27,13 @@ import me.uos.cotteriain_keepfitapp.Database.HistoryDatabase;
 import me.uos.cotteriain_keepfitapp.General.MyExecutor;
 import me.uos.cotteriain_keepfitapp.General.PopupWindow;
 import me.uos.cotteriain_keepfitapp.General.SharedData;
-import me.uos.cotteriain_keepfitapp.HistorySettings.HistoryAdapter;
-import me.uos.cotteriain_keepfitapp.HistorySettings.HistoryData;
-import me.uos.cotteriain_keepfitapp.HistorySettings.HistoryViewModel;
+import me.uos.cotteriain_keepfitapp.History.HistoryAdapter;
+import me.uos.cotteriain_keepfitapp.History.HistoryData;
+import me.uos.cotteriain_keepfitapp.History.HistoryViewModel;
 
 public class HistoryActivity extends AppCompatActivity implements HistoryAdapter.HistoryClickListener {
 
-    private final String TAG = "My/" + SettingsActivity.class.getSimpleName();
+    private final String TAG = "MyTag/" + SettingsActivity.class.getSimpleName();
 
     private SharedData sharedData;
     private HistoryDatabase historyDatabase;
@@ -67,7 +66,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     @Override
     protected void onResume() {
         super.onResume();
-        historyAdapter.setEditable(sharedData.getBool(getString(R.string.setting_history_editable), getResources().getBoolean(R.bool.default_history_editable)));
+        Log.d(TAG, "onResume: ");
+        boolean isHistoryEditable = sharedData.getBool(getString(R.string.setting_history_editable), getResources().getBoolean(R.bool.default_history_editable));
+        historyAdapter.setEditable(isHistoryEditable);
     }
 
     private void setupViewModel(){
@@ -142,6 +143,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         Intent intent = null;
         switch(itemID){
             case R.id.activity:
+//                finish();
                 intent = new Intent(this, MainActivity.class);
                 break;
             case R.id.history:
@@ -151,9 +153,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
                 intent = new Intent(this, SettingsActivity.class);
                 break;
         }
-        if(!intent.getComponent().getClassName().equals(this.getClass().getName())){
-            if(intent != null)
+        if(intent != null) {
+            if (!intent.getComponent().getClassName().equals(this.getClass().getName())) {
                 startActivity(intent);
+            }
         }
         return super.onOptionsItemSelected(item);
     }

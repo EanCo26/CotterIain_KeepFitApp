@@ -3,7 +3,7 @@ package me.uos.cotteriain_keepfitapp.Database;
 import android.content.Context;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import me.uos.cotteriain_keepfitapp.HistorySettings.HistoryData;
+import me.uos.cotteriain_keepfitapp.History.HistoryData;
 
 @androidx.room.Database(entities = {HistoryData.class}, version = 2, exportSchema = false)
 public abstract class HistoryDatabase extends RoomDatabase {

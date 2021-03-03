@@ -11,12 +11,12 @@
         android:id="@+id/counter_button"
         style="@style/Text"
         android:layout_margin="4dp"
-        android:backgroundTint="@color/red"
-        android:text="Start Step Counter"
         android:textSize="12sp"
+        android:text="Start Step Counter"
+        android:backgroundTint="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/progress"
-        app:layout_constraintStart_toStartOf="@+id/progress" />
+        app:layout_constraintEnd_toStartOf="@+id/recycle_view"
+        app:layout_constraintTop_toBottomOf="@+id/add_goal" />
 
     <EditText
         android:id="@+id/steps"
@@ -50,10 +50,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/counter_button"
-        app:layout_constraintEnd_toStartOf="@+id/add_goal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/counter_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintTop_toTopOf="parent"
         tools:progress="65" />
 
     <TextView
@@ -66,15 +66,23 @@
         tools:text="1000" />
 
     <TextView
-        android:id="@+id/header"
+        android:id="@+id/header_name"
         style="@style/Text"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/header_percent"
+        app:layout_constraintEnd_toEndOf="@+id/header_percent"
+        app:layout_constraintStart_toStartOf="@+id/header_percent"
+        tools:text="[GOAL NAME]" />
+
+    <TextView
+        android:id="@+id/header_percent"
+        style="@style/Text"
+        android:layout_width="0dp"
         android:layout_margin="8dp"
-        android:textAlignment="textEnd"
-        app:layout_constraintEnd_toEndOf="@+id/progress"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="[GOAL NAME] - [GOAL%]" />
+        tools:text="[GOAL%]"
+        app:layout_constraintBottom_toTopOf="@+id/counter_button"
+        app:layout_constraintEnd_toStartOf="@+id/recycle_view"
+        app:layout_constraintStart_toStartOf="@+id/counter_button" />
 
     <TextView
         android:id="@+id/goal_mgr_title"

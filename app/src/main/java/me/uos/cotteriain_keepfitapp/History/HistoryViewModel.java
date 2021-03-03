@@ -1,4 +1,4 @@
-package me.uos.cotteriain_keepfitapp.HistorySettings;
+package me.uos.cotteriain_keepfitapp.History;
 
 import android.app.Application;
 

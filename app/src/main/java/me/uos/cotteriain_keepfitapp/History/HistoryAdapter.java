@@ -1,4 +1,4 @@
-package me.uos.cotteriain_keepfitapp.HistorySettings;
+package me.uos.cotteriain_keepfitapp.History;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +18,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     private List<HistoryData> historyList;
     private HistoryClickListener historyClickListener;
 
-    private boolean editable;
+    private boolean editable = true;
 
     public HistoryAdapter(HistoryClickListener historyClickListener, boolean editable) {
         this.historyClickListener = historyClickListener;
@@ -74,7 +74,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                 @Override
                 public void onClick(View v) { historyClickListener.onHistoryClick(historyData); }
             });
-            editIcon.setVisibility(editable ? View.VISIBLE : View.INVISIBLE);
         }
 
         private void setHistoryData(HistoryData historyData){
@@ -84,6 +83,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             stepsTakenText.setText(Integer.toString(historyData.getStepsTaken()));
             goalStepsText.setText(Integer.toString(historyData.getGoalSteps()));
             progressBar.setProgress(historyData.getPercentageToGoal());
+            editIcon.setVisibility(editable ? View.VISIBLE : View.INVISIBLE);
         }
 
         private HistoryData getHistoryData(){ return historyData; }

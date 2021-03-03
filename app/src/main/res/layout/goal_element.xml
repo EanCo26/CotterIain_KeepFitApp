@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="176dp"
-    android:layout_height="120dp"
+    android:layout_width="180dp"
+    android:layout_height="100dp"
     android:layout_margin="8dp"
     android:background="@drawable/empty_border">
 
@@ -41,19 +41,17 @@
     <TextView
         android:id="@+id/textView"
         style="@style/ElementText"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        android:text="Goal:"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit"
-        android:text="Goal:"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
         android:id="@+id/goal_steps"
-        android:layout_width="0dp"
         android:layout_marginStart="4dp"
         style="@style/ElementText"
+        tools:text="1234000"
         app:layout_constraintTop_toTopOf="@+id/textView"
-        app:layout_constraintStart_toEndOf="@id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="1234000"/>
+        app:layout_constraintStart_toEndOf="@id/textView"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

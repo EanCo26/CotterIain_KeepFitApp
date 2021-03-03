@@ -85,14 +85,24 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
-        MenuItem item =  menu.findItem(R.id.settings);
-        item.setIcon(R.drawable.baseline_settings_white_48);
+        MenuItem activity =  menu.findItem(R.id.activity);
+        activity.setVisible(false);
+        MenuItem history =  menu.findItem(R.id.history);
+        history.setVisible(false);
+
+        MenuItem settingsItem =  menu.findItem(R.id.settings);
+        settingsItem.setIcon(R.drawable.baseline_settings_white_48);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        finish();
+        int itemID = item.getItemId();
+        switch(itemID){
+            case R.id.settings:
+                finish();
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
     android:layout_margin="8dp"
     android:background="@color/grey">
 
@@ -19,65 +19,51 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="120dp"
-        android:layout_margin="8dp"
         style="@style/Text"
+        android:layout_width="0dp"
+        android:layout_margin="8dp"
         android:text="The Goal Name"
         android:textAlignment="textStart"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date"/>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/steps_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/steps"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/date" />
+
+    <TextView
+        android:id="@+id/steps"
+        style="@style/ElementText"
+        android:text="Steps: "
+        android:textAlignment="textStart"
         app:layout_constraintEnd_toStartOf="@+id/completion_bar"
-        app:layout_constraintStart_toEndOf="@+id/name"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/date" />
 
-        <TextView
-            android:id="@+id/steps"
-            style="@style/ElementText"
-            android:text="Steps: "
-            android:textAlignment="textStart"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/goal_steps"
+        style="@style/ElementText"
+        android:layout_marginTop="16dp"
+        android:text="Goal: "
+        android:textAlignment="textStart"
+        app:layout_constraintStart_toStartOf="@+id/steps"
+        app:layout_constraintTop_toBottomOf="@id/steps" />
 
-        <TextView
-            android:id="@+id/steps_num"
-            android:layout_width="0dp"
-            style="@style/ElementText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/steps"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="7500" />
+    <TextView
+        android:id="@+id/steps_num"
+        style="@style/ElementText"
+        app:layout_constraintStart_toEndOf="@id/steps"
+        app:layout_constraintTop_toTopOf="@id/steps"
+        tools:text="7500" />
 
-        <TextView
-            android:id="@+id/goal_steps"
-            style="@style/ElementText"
-            android:layout_width="0dp"
-            android:layout_marginTop="16dp"
-            android:text="Goal: "
-            android:textAlignment="textStart"
-            app:layout_constraintEnd_toEndOf="@id/steps"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/steps" />
-
-        <TextView
-            android:id="@+id/goal_steps_num"
-            android:layout_width="0dp"
-            style="@style/ElementText"
-            tools:text="10000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/steps"
-            app:layout_constraintTop_toTopOf="@id/goal_steps" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/goal_steps_num"
+        style="@style/ElementText"
+        app:layout_constraintStart_toEndOf="@id/steps"
+        app:layout_constraintTop_toTopOf="@id/goal_steps"
+        tools:text="10000" />
 
     <ProgressBar
         android:id="@+id/completion_bar"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
         style="@style/ProgressBarStyle"
@@ -93,7 +79,7 @@
         android:layout_margin="4dp"
         android:background="?selectableItemBackground"
         android:clickable="true"
-        android:src="@drawable/baseline_create_white_48"
+        android:src="@drawable/baseline_create_white_18dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

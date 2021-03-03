@@ -20,6 +20,7 @@ import me.uos.cotteriain_keepfitapp.HistorySettings.HistoryData;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -42,7 +43,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalClickListener{
 
-    private final String TAG = "My/" + MainActivity.class.getSimpleName();
+    private final String TAG = "MyTag/" + this.getClass().getSimpleName();
 
     private DateSystem dateSystem;
     private SharedData sharedData;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     private GoalData activeGoal = null;
     private int steps = 0;
 
-    private TextView goalText, headerNameText, headerPercentText;
+    private TextView goalText, headerText;
     private EditText stepsEdit;
     private ProgressBar progressBar;
 
@@ -90,8 +91,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     }
 
     private void assignActivityElements(){
-        headerNameText = (TextView) findViewById(R.id.header_name);
-        headerPercentText = (TextView) findViewById(R.id.header_percent);
+        headerText = (TextView) findViewById(R.id.header);
         goalText = (TextView) findViewById(R.id.goal_number);
         stepsEdit = (EditText) findViewById(R.id.steps);
         steps = sharedData.getInt(getString(R.string.current_steps), getResources().getInteger(R.integer.default_steps));
@@ -113,7 +113,12 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         boolean isGoalsEditable = sharedData.getBool(getString(R.string.setting_goals_editable), getResources().getBoolean(R.bool.default_goal_editable));
         goalAdapter = new GoalAdapter(gCL, isGoalsEditable);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        }
+        else{
+            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        }
         recyclerView.setLayoutManager(layoutManager);
     }
 
@@ -124,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
             @Override
             public void onChanged(List<GoalData> goalDataList) {
                 int id = sharedData.getInt(getString(R.string.current_activity), getResources().getInteger(R.integer.default_activity));
+                goalNames.clear();
                 for (GoalData goal: goalDataList){
                     goalNames.add(goal.getName());
                     if(goal.getId() == id)
@@ -213,8 +219,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
             int percent = steps * 100 / goalSteps;
 
             progressBar.setProgress(percent);
-            headerNameText.setText(activeGoal.getName());
-            headerPercentText.setText(Integer.toString(percent) + "%");
+            headerText.setText(activeGoal.getName() + " - " + Integer.toString(percent) + "%");
             goalText.setText(Integer.toString(goalSteps));
         }
     }
@@ -249,11 +254,12 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                         goalStepsText = goal_steps_field.getText().toString();
 
                 boolean isAllowed = true;
-                if(nameText.isEmpty()) { name_field.setError("Name needs input"); isAllowed = false;}
-                if(goalStepsText.isEmpty()){ goal_steps_field.setError("Steps needs input"); isAllowed = false; }
+                String none = "Requires Input", match = "Names cannot Match";
+                if(nameText.isEmpty()) { name_field.setError(none); isAllowed = false;}
+                if(goalStepsText.isEmpty()){ goal_steps_field.setError(none); isAllowed = false; }
                 if(goalNames.contains(nameText)){
-                    if(isCreating){ name_field.setError("Name matches other"); isAllowed = false; }
-                    else if (!isCreating && !nameText.equals(goal.getName())){ name_field.setError("Name matches other"); isAllowed = false; }
+                    if(isCreating){ name_field.setError(match); isAllowed = false; }
+                    else if (!isCreating && !nameText.equals(goal.getName())){ name_field.setError(match); isAllowed = false; }
                 }
                 if(!isAllowed)
                     return;
@@ -317,12 +323,19 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         int itemID = item.getItemId();
         Intent intent = null;
         switch(itemID){
+            case R.id.activity:
+                intent = new Intent(this, MainActivity.class);
+                break;
+            case R.id.history:
+                intent = new Intent(this, HistoryActivity.class);
+                break;
             case R.id.settings:
                 intent = new Intent(this, SettingsActivity.class);
                 break;
         }
-        if(intent != null) {
-            startActivity(intent);
+        if(!intent.getComponent().getClassName().equals(this.getClass().getName())){
+            if(intent != null)
+                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

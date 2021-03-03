@@ -1,8 +1,11 @@
 package me.uos.cotteriain_keepfitapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -34,8 +38,6 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
     private SharedData sharedData;
     private HistoryDatabase historyDatabase;
-
-    private List<String> historyNames = new ArrayList<>();
 
     private RecyclerView recyclerView;
     private HistoryAdapter historyAdapter;
@@ -74,32 +76,11 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         viewModel.getHistoryList().observe(this, new Observer<List<HistoryData>>() {
             @Override
             public void onChanged(List<HistoryData> historyDataList) {
-                for (HistoryData historyData: historyDataList) {
-                    historyNames.add(historyData.getGoalName());
-                }
                 historyAdapter.setHistoryList(historyDataList);
                 recyclerView.swapAdapter(historyAdapter, true);
             }
         });
     }
-
-//    public void changeActivity(View view){
-//        Intent intent = null;
-//        int inAnim = android.R.anim.slide_in_left;
-//        int outAnim = android.R.anim.slide_out_right;
-//        switch(view.getId()){
-//            case R.id.navi_activity:
-//                intent = new Intent(this, MainActivity.class);
-//                break;
-//            case R.id.navi_settings:
-//                intent = new Intent(this, SettingsActivity.class);
-//                break;
-//        }
-//        if(intent != null) {
-//            startActivity(intent);
-//            overridePendingTransition(inAnim, outAnim);
-//        }
-//    }
 
     private void editHistoryItem(HistoryData historyData){
         View popupLayout = getLayoutInflater().inflate(R.layout.history_popup, null);
@@ -125,12 +106,13 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
                     stepsText = steps_field.getText().toString(),
                     goalStepsText = goal_steps_field.getText().toString();
 
+                String none = "Requires Input";
                 if(nameText.isEmpty())
-                    name_field.setError("Name needs input");
+                    name_field.setError(none);
                 if(stepsText.isEmpty())
-                    steps_field.setError("Steps needs input");
+                    steps_field.setError(none);
                 if(goalStepsText.isEmpty())
-                    goal_steps_field.setError("Goal needs input");
+                    goal_steps_field.setError(none);
                 if(nameText.isEmpty() || stepsText.isEmpty() || goalStepsText.isEmpty())
                     return;
 
@@ -149,6 +131,31 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
                 popupWindow.closeWindow();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) { getMenuInflater().inflate(R.menu.toolbar, menu);return true; }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemID = item.getItemId();
+        Intent intent = null;
+        switch(itemID){
+            case R.id.activity:
+                intent = new Intent(this, MainActivity.class);
+                break;
+            case R.id.history:
+                intent = new Intent(this, HistoryActivity.class);
+                break;
+            case R.id.settings:
+                intent = new Intent(this, SettingsActivity.class);
+                break;
+        }
+        if(!intent.getComponent().getClassName().equals(this.getClass().getName())){
+            if(intent != null)
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

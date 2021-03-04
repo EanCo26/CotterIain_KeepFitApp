@@ -22,9 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private final String TAG = "My/" + SettingsActivity.class.getSimpleName();
 
-    //todo - do the same for push notification as goals editable
-
-    private Switch goalSetting, historySetting;
+    private Switch notificationSetting, goalSetting, historySetting;
     private Button clearHistoryButton;
 
     private HistoryDatabase historyDatabase;
@@ -38,6 +36,13 @@ public class SettingsActivity extends AppCompatActivity {
 
         historyDatabase = HistoryDatabase.getsInstance(getApplicationContext());
         sharedData = new SharedData(this.getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE));
+
+        notificationSetting = (Switch)findViewById(R.id.notification_setting);
+        notificationSetting.setChecked(sharedData.getBool(getString(R.string.setting_notifications), getResources().getBoolean(R.bool.default_notification)));
+        notificationSetting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { sharedData.setBool(getString(R.string.setting_notifications), isChecked); }
+        });
 
         goalSetting = (Switch)findViewById(R.id.goals_setting);
         goalSetting.setChecked(sharedData.getBool(getString(R.string.setting_goals_editable), getResources().getBoolean(R.bool.default_goal_editable)));
@@ -100,7 +105,7 @@ public class SettingsActivity extends AppCompatActivity {
         int itemID = item.getItemId();
         switch(itemID){
             case R.id.settings:
-                finish();
+                super.onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);

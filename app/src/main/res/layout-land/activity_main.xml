@@ -67,7 +67,7 @@
 
     <TextView
         android:id="@+id/header_name"
-        style="@style/Text"
+        style="@style/Title"
         android:layout_width="0dp"
         app:layout_constraintBottom_toTopOf="@+id/header_percent"
         app:layout_constraintEnd_toEndOf="@+id/header_percent"

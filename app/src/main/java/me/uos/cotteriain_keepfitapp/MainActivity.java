@@ -11,6 +11,7 @@ import me.uos.cotteriain_keepfitapp.Database.GoalDatabase;
 import me.uos.cotteriain_keepfitapp.Database.HistoryDatabase;
 import me.uos.cotteriain_keepfitapp.General.DateSystem;
 import me.uos.cotteriain_keepfitapp.General.MyExecutor;
+import me.uos.cotteriain_keepfitapp.General.NotificationUtils;
 import me.uos.cotteriain_keepfitapp.General.PopupWindow;
 import me.uos.cotteriain_keepfitapp.General.SharedData;
 import me.uos.cotteriain_keepfitapp.Goal.GoalAdapter;
@@ -166,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 if(stepsEdit.hasFocus())
                 {
                     String input = stepsEdit.getText().toString();
@@ -217,6 +217,11 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
             steps = sharedData.getInt(getString(R.string.current_steps), getResources().getInteger(R.integer.default_steps));
             int goalSteps = activeGoal.getSteps();
             int percent = steps * 100 / goalSteps;
+
+            if(sharedData.getBool(getString(R.string.setting_notifications), getResources().getBoolean(R.bool.default_notification))){
+                if(percent >= 25)
+                    new NotificationUtils(this, percent);
+            }
 
             progressBar.setProgress(percent);
             headerText.setText(activeGoal.getName());

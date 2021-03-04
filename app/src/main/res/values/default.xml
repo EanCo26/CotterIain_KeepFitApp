@@ -17,6 +17,13 @@
     <string name="setting_history_editable" translatable="false">me.uos.cotteriain_keepfitapp.HistoryEditable</string>
     <bool name="default_history_editable">true</bool>
 
+    <string name="setting_notifications" translatable="false">me.uos.cotteriain_keepfitapp.HistoryEditable</string>
+    <bool name="default_notification">true</bool>
+
     <integer name="steps_character_limit">7</integer>
     <integer name="name_character_limit">15</integer>
+
+    <integer name="notification_id">25001</integer>
+    <integer name="pending_id">25002</integer>
+    <string name="notification_channel">KeepFit.channel</string>
 </resources>

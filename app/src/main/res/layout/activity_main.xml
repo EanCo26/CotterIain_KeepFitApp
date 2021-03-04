@@ -24,7 +24,7 @@
         android:id="@+id/dash"
         style="@style/Title"
         android:layout_width="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="24dp"
         android:text=" - "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,20 +34,20 @@
         android:id="@+id/header_name"
         style="@style/Title"
         android:layout_width="0dp"
-        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/dash"
         app:layout_constraintEnd_toStartOf="@+id/dash"
         app:layout_constraintStart_toStartOf="@+id/progress"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dash"
         tools:text="[GOAL NAME]" />
 
     <TextView
         android:id="@+id/header_percent"
         style="@style/Title"
         android:layout_width="wrap_content"
-        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/dash"
         app:layout_constraintEnd_toEndOf="@+id/progress"
         app:layout_constraintStart_toEndOf="@+id/dash"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dash"
         tools:text="[GOAL%]" />
 
     <ImageView
@@ -88,6 +88,7 @@
     <Button
         android:id="@+id/counter_button"
         style="@style/Text"
+        android:layout_margin="16dp"
         android:backgroundTint="@color/red"
         android:textSize="12sp"
         android:text="Start Step Counter"

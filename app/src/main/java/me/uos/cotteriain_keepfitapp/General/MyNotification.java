@@ -25,13 +25,20 @@ public class MyNotification {
 
     private static final String LIFECYCLE_CALLBACKS = "keepfit_callbacks";
 
+    /**
+     * Two Constructors which then run notifications for different processes on different channels
+     *  - if message (msg) supplied then run notification that updates user on progress they have made
+     *   - if no message (msg) then run notification that updates user on history added to
+     * @param context
+     * @param msg
+     */
     public MyNotification(Context context, String msg) {
         progressNotification(context, msg);
     }
-
     public MyNotification(Context context) {
         historyNotification(context);
     }
+
 
     private static void progressNotification(Context context, String msg){
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -61,6 +68,14 @@ public class MyNotification {
         notificationManager.notify(HISTORY_ID, nb.build());
     }
 
+    /**
+     * Abstraction for creating the Builder to be used in both forms of notification
+     * @param context
+     * @param msg
+     * @param channel
+     * @param activityClass
+     * @return
+     */
     private static NotificationCompat.Builder notificationBuilder(Context context, String msg, String channel, Class<? extends Activity> activityClass){
         return new NotificationCompat.Builder(context, channel)
                 .setAutoCancel(true)

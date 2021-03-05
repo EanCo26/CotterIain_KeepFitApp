@@ -20,16 +20,31 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     private boolean editable = true;
 
+    /**
+     *
+     * @param historyClickListener - supplied historyClickListener initialized by HistoryActivity
+     * @param editable - whether history are set to editable in settings
+     */
     public HistoryAdapter(HistoryClickListener historyClickListener, boolean editable) {
         this.historyClickListener = historyClickListener;
         this.editable = editable;
     }
 
+    /**
+     * ViewModel in HistoryActivity observed changed in LiveData of history list
+     * - rebinds all ViewHolders in supplied list
+     * @param historyList
+     */
     public void setHistoryList(List<HistoryData> historyList){
         this.historyList = historyList;
         notifyDataSetChanged();
     }
 
+    /**
+     * used within onResume of HistoryActivity
+     * - necessary since in manifest only single instance of activity can be created
+     * @param editable
+     */
     public void setEditable(boolean editable){
         this.editable = editable;
         notifyDataSetChanged();
@@ -42,6 +57,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         return new ViewHolder(view);
     }
 
+    /**
+     * sets ViewHolder for each history element in list
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setHistoryData(historyList.get(position));
@@ -59,6 +79,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         private ImageView editIcon;
         private HistoryData historyData;
 
+        /**
+         * Finds Views xml components inside of and sets click listeners for specific button
+         * @param itemView
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -76,6 +100,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             });
         }
 
+        /**
+         * sets specific attributes for each history view
+         * @param historyData
+         */
         private void setHistoryData(HistoryData historyData){
             this.historyData = historyData;
             goalNameText.setText(historyData.getGoalName());
@@ -86,7 +114,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             editIcon.setVisibility(editable ? View.VISIBLE : View.INVISIBLE);
         }
 
-        private HistoryData getHistoryData(){ return historyData; }
+        //todo remove method if app works properly
+//        private HistoryData getHistoryData(){ return historyData; }
     }
 
     public interface HistoryClickListener{

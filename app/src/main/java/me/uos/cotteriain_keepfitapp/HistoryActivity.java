@@ -65,7 +65,6 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: ");
         boolean isHistoryEditable = sharedData.getBool(getString(R.string.setting_history_editable), getResources().getBoolean(R.bool.default_history_editable));
         historyAdapter.setEditable(isHistoryEditable);
     }

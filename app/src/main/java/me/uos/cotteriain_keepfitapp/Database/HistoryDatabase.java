@@ -12,6 +12,12 @@ public abstract class HistoryDatabase extends RoomDatabase {
     private static HistoryDatabase sInstance;
     public abstract HistoryDAO historyDAO();
 
+    /**
+     * An object to access history database uses singleton pattern to allow only one instance accessible
+     *  - runs off main thread
+     * @param context
+     * @return Singleton HistoryDatabase
+     */
     public static HistoryDatabase getsInstance(Context context) {
         if(sInstance == null){
             synchronized (LOCK){

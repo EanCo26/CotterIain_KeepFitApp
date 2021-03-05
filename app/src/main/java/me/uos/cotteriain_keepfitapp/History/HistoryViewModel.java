@@ -13,6 +13,10 @@ public class HistoryViewModel extends AndroidViewModel {
 
     private LiveData<List<HistoryData>> historyList;
 
+    /**
+     * HistoryViewModel allows the HistoryActivity to observe changes in HistoryDatabase
+     * @param application
+     */
     public HistoryViewModel(@NonNull Application application) {
         super(application);
 

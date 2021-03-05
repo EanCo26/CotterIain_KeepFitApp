@@ -7,8 +7,13 @@ public class SharedData {
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
 
+    /**
+     * Activities access this to save or load to internal storage
+     * @param sharedPref
+     */
     public SharedData(SharedPreferences sharedPref) {
         this.sharedPref = sharedPref;
+        editor = sharedPref.edit();
     }
 
     public int getInt(String key, int defaultValue){ return sharedPref.getInt(key, defaultValue); }
@@ -16,17 +21,14 @@ public class SharedData {
     public Boolean getBool(String key, boolean defaultValue){ return sharedPref.getBoolean(key, defaultValue); }
 
     public void setInt(String key, int value){
-        editor = sharedPref.edit();
         editor.putInt(key, value);
         editor.apply();
     }
     public void setString(String key, String value){
-        editor = sharedPref.edit();
         editor.putString(key, value);
         editor.apply();
     }
     public void setBool(String key, boolean value){
-        editor = sharedPref.edit();
         editor.putBoolean(key, value);
         editor.apply();
     }

@@ -6,18 +6,28 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "goal")
 public class GoalData {
-
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
     private int steps;
 
+    /**
+     * creates a new goal entry that can be supplied to goal database
+     * @param name
+     * @param steps
+     */
     @Ignore
     public GoalData(String name, int steps) {
         this.name = name;
         this.steps = steps;
     }
 
+    /**
+     * creates a goal that is used exclusively by the goal database
+     * @param id
+     * @param name
+     * @param steps
+     */
     public GoalData(int id, String name, int steps) {
         this.id = id;
         this.name = name;

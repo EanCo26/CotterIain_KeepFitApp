@@ -13,6 +13,10 @@ public class GoalViewModel extends AndroidViewModel {
 
     private LiveData<List<GoalData>> goalList;
 
+    /**
+     * GoalViewModel allows the MainActivity to observe changes in GoalDatabase
+     * @param application
+     */
     public GoalViewModel(@NonNull Application application) {
         super(application);
 

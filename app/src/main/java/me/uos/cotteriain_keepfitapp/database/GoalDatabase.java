@@ -13,6 +13,12 @@ public abstract class GoalDatabase extends RoomDatabase {
     private static GoalDatabase sInstance;
     public abstract GoalDao goalDao();
 
+    /**
+     * An object to access goal database uses singleton pattern to allow only one instance accessible
+     * - runs off main thread
+     * @param context
+     * @return Singleton GoalDatabase
+     */
     public static GoalDatabase getsInstance(Context context) {
         if(sInstance == null){
             synchronized (LOCK){

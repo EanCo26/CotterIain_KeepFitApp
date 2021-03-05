@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import me.uos.cotteriain_keepfitapp.Database.HistoryDatabase;
 import me.uos.cotteriain_keepfitapp.General.MyExecutor;
-import me.uos.cotteriain_keepfitapp.General.PopupWindow;
 import me.uos.cotteriain_keepfitapp.General.SharedData;
 import me.uos.cotteriain_keepfitapp.History.HistoryAdapter;
 import me.uos.cotteriain_keepfitapp.History.HistoryData;
@@ -87,8 +86,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         View popupLayout = getLayoutInflater().inflate(R.layout.history_popup, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setView(popupLayout);
-        PopupWindow popupWindow = new PopupWindow(dialogBuilder, dialogBuilder.create());
-        popupWindow.showWindow();
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
 
         EditText name_field = (EditText)popupLayout.findViewById(R.id.edit_name);
         name_field.setText(historyData.getGoalName());
@@ -129,7 +128,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
                     @Override
                     public void run() { historyDatabase.historyDAO().editHistory(historyData); }
                 });
-                popupWindow.closeWindow();
+                dialog.dismiss();
             }
         });
     }

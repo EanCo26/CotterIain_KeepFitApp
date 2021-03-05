@@ -14,16 +14,15 @@ public class DateSystem {
     private static String current;
     private String old;
 
-    private SharedData sharedData;
-
     public DateSystem(String current, String old) {
         this.current = current;
         this.old = old;
     }
 
     public Boolean datesMatch(){
-//        return false;
-        return current.equals(old);
+        //todo remove false return
+        return false;
+//        return current.equals(old);
     }
 
     public String getCurrentDate() { return current; }

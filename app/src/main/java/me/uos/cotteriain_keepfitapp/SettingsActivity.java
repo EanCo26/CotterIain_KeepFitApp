@@ -5,11 +5,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import me.uos.cotteriain_keepfitapp.Database.HistoryDatabase;
 import me.uos.cotteriain_keepfitapp.General.MyExecutor;
-import me.uos.cotteriain_keepfitapp.General.PopupWindow;
 import me.uos.cotteriain_keepfitapp.General.SharedData;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,8 +67,8 @@ public class SettingsActivity extends AppCompatActivity {
         View popupLayout = getLayoutInflater().inflate(R.layout.clear_popup, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setView(popupLayout);
-        PopupWindow popupWindow = new PopupWindow(dialogBuilder, dialogBuilder.create());
-        popupWindow.showWindow();
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
 
         Button yesButton = (Button)popupLayout.findViewById(R.id.yes);
         yesButton.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +80,7 @@ public class SettingsActivity extends AppCompatActivity {
                         historyDatabase.historyDAO().clearHistoryTable();
                     }
                 });
-                popupWindow.closeWindow();
+                dialog.dismiss();
             }
         });
     }

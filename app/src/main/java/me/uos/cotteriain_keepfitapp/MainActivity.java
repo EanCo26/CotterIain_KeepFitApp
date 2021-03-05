@@ -11,8 +11,7 @@ import me.uos.cotteriain_keepfitapp.Database.GoalDatabase;
 import me.uos.cotteriain_keepfitapp.Database.HistoryDatabase;
 import me.uos.cotteriain_keepfitapp.General.DateSystem;
 import me.uos.cotteriain_keepfitapp.General.MyExecutor;
-import me.uos.cotteriain_keepfitapp.General.NotificationUtils;
-import me.uos.cotteriain_keepfitapp.General.PopupWindow;
+import me.uos.cotteriain_keepfitapp.General.MyNotification;
 import me.uos.cotteriain_keepfitapp.General.SharedData;
 import me.uos.cotteriain_keepfitapp.Goal.GoalAdapter;
 import me.uos.cotteriain_keepfitapp.Goal.GoalData;
@@ -138,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                 }
 
                 if(dateSystem.datesMatch())
-                    setGoalProgressUI();
+                    setGoalProgressUI(false);
                 else{
                     recordHistory();
                     resetActiveGoalData();
@@ -181,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                     }
                 }
                 stepsEdit.setCursorVisible(false);
-                setGoalProgressUI();
+                setGoalProgressUI(true);
             }
             @Override
             public void afterTextChanged(Editable s) { }
@@ -196,6 +195,10 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
             int percent = steps * 100 / goalSteps;
             HistoryData newHistoryData = new HistoryData(dateSystem.getOldDate(), goalName, steps, goalSteps, percent);
 
+
+            if (sharedData.getBool(getString(R.string.setting_notifications), getResources().getBoolean(R.bool.default_notification)))
+                new MyNotification(this);
+
             MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
                 @Override
                 public void run() {
@@ -206,21 +209,35 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     }
 
     private void resetActiveGoalData(){
+        activeGoal = null;
         dateSystem.setOldDate(dateSystem.getCurrentDate());
         sharedData.setString(getString(R.string.activity_date), dateSystem.getCurrentDate());
-        sharedData.setInt(getString(R.string.current_steps), 0);
-        sharedData.setInt(getString(R.string.current_activity), -1);
+        sharedData.setInt(getString(R.string.current_steps), getResources().getInteger(R.integer.default_steps));
+        sharedData.setInt(getString(R.string.current_activity), getResources().getInteger(R.integer.default_activity));
+        sharedData.setInt(getString(R.string.progress_achieved),  getResources().getInteger(R.integer.default_progress));
     }
 
-    private void setGoalProgressUI(){
+    private void setGoalProgressUI(boolean isUserUpdated){
         if(activeGoal != null) {
             steps = sharedData.getInt(getString(R.string.current_steps), getResources().getInteger(R.integer.default_steps));
             int goalSteps = activeGoal.getSteps();
             int percent = steps * 100 / goalSteps;
 
-            if(sharedData.getBool(getString(R.string.setting_notifications), getResources().getBoolean(R.bool.default_notification))){
-                if(percent >= 25)
-                    new NotificationUtils(this, percent);
+            if(isUserUpdated) {
+                int progressAchieved = sharedData.getInt(getString(R.string.progress_achieved),  getResources().getInteger(R.integer.default_progress));
+                progressAchieved = progressAchieved < 1 && percent >=25 ? 1 : progressAchieved;
+                progressAchieved = progressAchieved < 2 && percent >=50 ? 2 : progressAchieved;
+                progressAchieved = progressAchieved < 3 && percent >=75 ? 3 : progressAchieved;
+                progressAchieved = progressAchieved < 4 && percent >=100 ? 4 : progressAchieved;
+
+                boolean update = false;
+                if(progressAchieved != sharedData.getInt(getString(R.string.progress_achieved),  getResources().getInteger(R.integer.default_progress))){
+                    update = true;
+                    sharedData.setInt(getString(R.string.progress_achieved),  progressAchieved);
+                }
+
+                if (update && sharedData.getBool(getString(R.string.setting_notifications), getResources().getBoolean(R.bool.default_notification)))
+                    new MyNotification(this, "You have achieved " + percent + "% of your goal");
             }
 
             progressBar.setProgress(percent);
@@ -236,8 +253,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         View popupLayout = getLayoutInflater().inflate(R.layout.goal_popup, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setView(popupLayout);
-        PopupWindow popupWindow = new PopupWindow(dialogBuilder, dialogBuilder.create());
-        popupWindow.showWindow();
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
 
         EditText name_field = (EditText) popupLayout.findViewById(R.id.name);
         EditText goal_steps_field = (EditText) popupLayout.findViewById(R.id.steps);
@@ -288,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                         }
                     });
                 }
-                popupWindow.closeWindow();
+                dialog.dismiss();
             }
         });
     }
@@ -297,8 +314,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         View popupLayout = getLayoutInflater().inflate(R.layout.clear_popup, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setView(popupLayout);
-        PopupWindow popupWindow = new PopupWindow(dialogBuilder, dialogBuilder.create());
-        popupWindow.showWindow();
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
 
         TextView title = (TextView) popupLayout.findViewById(R.id.title);
         title.setText("Please Confirm Deleting of Goal");
@@ -313,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                         goalDatabase.goalDao().deleteGoal(goal);
                     }
                 });
-                popupWindow.closeWindow();
+                dialog.dismiss();
             }
         });
     }
@@ -353,7 +370,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         sharedData.setInt(getString(R.string.current_activity), id);
 
         goalAdapter.setActiveGoal(itemIndex);
-        setGoalProgressUI();
+        setGoalProgressUI(false);
     }
 
     @Override

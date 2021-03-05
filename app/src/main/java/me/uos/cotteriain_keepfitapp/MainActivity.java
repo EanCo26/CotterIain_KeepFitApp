@@ -369,6 +369,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         activeGoal=goal;
         sharedData.setInt(getString(R.string.current_activity), id);
 
+        sharedData.setInt(getString(R.string.progress_achieved),  getResources().getInteger(R.integer.default_progress));
         goalAdapter.setActiveGoal(itemIndex);
         setGoalProgressUI(false);
     }

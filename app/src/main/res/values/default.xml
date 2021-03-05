@@ -20,7 +20,7 @@
     <string name="setting_history_editable" translatable="false">me.uos.cotteriain_keepfitapp.HistoryEditable</string>
     <bool name="default_history_editable">true</bool>
 
-    <string name="setting_notifications" translatable="false">me.uos.cotteriain_keepfitapp.HistoryEditable</string>
+    <string name="setting_notifications" translatable="false">me.uos.cotteriain_keepfitapp.NotificationsAllowed</string>
     <bool name="default_notification">true</bool>
 
     <integer name="steps_character_limit">7</integer>

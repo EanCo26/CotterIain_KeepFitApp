@@ -7,17 +7,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/counter_button"
-        style="@style/Text"
-        android:layout_margin="4dp"
-        android:textSize="12sp"
-        android:text="Start Step Counter"
-        android:backgroundTint="@color/red"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/recycle_view"
-        app:layout_constraintTop_toBottomOf="@+id/add_goal" />
-
     <EditText
         android:id="@+id/steps"
         style="@style/DisplayText"
@@ -51,7 +40,7 @@
         android:layout_height="0dp"
         android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/counter_button"
+        app:layout_constraintEnd_toStartOf="@id/dash"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:progress="65" />
@@ -65,24 +54,35 @@
         app:layout_constraintTop_toBottomOf="@+id/divider"
         tools:text="1000" />
 
+    <ImageView
+        android:id="@+id/dash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/header_name"
         style="@style/Title"
-        android:layout_width="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/header_percent"
-        app:layout_constraintEnd_toEndOf="@+id/header_percent"
-        app:layout_constraintStart_toStartOf="@+id/header_percent"
-        tools:text="[GOAL NAME]" />
+        android:layout_margin="16dp"
+        tools:text="[GOAL NAME]"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/dash"
+        app:layout_constraintEnd_toStartOf="@+id/recycle_view"/>
 
     <TextView
         android:id="@+id/header_percent"
         style="@style/Text"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_margin="8dp"
-        tools:text="[GOAL%]"
-        app:layout_constraintBottom_toTopOf="@+id/counter_button"
-        app:layout_constraintEnd_toStartOf="@+id/recycle_view"
-        app:layout_constraintStart_toStartOf="@+id/counter_button" />
+        app:layout_constraintEnd_toEndOf="@+id/header_name"
+        app:layout_constraintStart_toStartOf="@+id/header_name"
+        app:layout_constraintTop_toBottomOf="@+id/header_name"
+        tools:text="[GOAL%]" />
 
     <TextView
         android:id="@+id/goal_mgr_title"

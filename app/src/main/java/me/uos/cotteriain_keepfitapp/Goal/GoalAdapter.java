@@ -110,9 +110,6 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
         holders.get(this.selectedViewIndex).setActive(true);
     }
 
-    //todo remove method if app works properly
-//    public GoalData getGoalEntryAt(int index){ return holders.get(index).getGoalData(); }
-
     class ViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView editIcon, deleteIcon;

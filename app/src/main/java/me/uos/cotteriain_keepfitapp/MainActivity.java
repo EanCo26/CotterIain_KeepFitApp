@@ -40,7 +40,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalClickListener{
+public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalClickListener {
 
     private final String TAG = "MyTag/" + this.getClass().getSimpleName();
 
@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         assignActivityElements();
         setRecyclerView();
         viewModelSetup();
-        //todo may cause breakage
         setStepsEdit();
     }
 
@@ -176,8 +175,6 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                 /**
                  * goalAdapter given new list and the active id - if reset then no goal will match the active goal
                  */
-                //todo remove if not necessary
-//                id = sharedData.getInt(getString(R.string.current_activity), getResources().getInteger(R.integer.default_activity));
                 goalAdapter.setGoalList(goalDataList, id);
                 recyclerView.swapAdapter(goalAdapter, true);
             }

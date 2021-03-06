@@ -30,8 +30,6 @@ public class DateSystem {
      * @return true if dates are the same; false if dates are not
      */
     public Boolean datesMatch(){
-        //todo remove false return
-//        return false;
         return current.equals(old);
     }
 

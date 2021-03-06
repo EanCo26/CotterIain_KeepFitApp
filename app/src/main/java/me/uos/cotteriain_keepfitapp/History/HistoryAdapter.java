@@ -113,9 +113,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             progressBar.setProgress(historyData.getPercentageToGoal());
             editIcon.setVisibility(editable ? View.VISIBLE : View.INVISIBLE);
         }
-
-        //todo remove method if app works properly
-//        private HistoryData getHistoryData(){ return historyData; }
     }
 
     public interface HistoryClickListener{

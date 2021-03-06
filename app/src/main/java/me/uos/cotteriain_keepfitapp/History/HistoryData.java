@@ -33,15 +33,6 @@ public class HistoryData {
         this.percentageToGoal = percentageToGoal;
     }
 
-    //todo remove
-//    @Ignore
-//    public HistoryData( String goalName, int stepsTaken, int goalSteps, int percentageToGoal) {
-//        this.goalName = goalName;
-//        this.stepsTaken = stepsTaken;
-//        this.goalSteps = goalSteps;
-//        this.percentageToGoal = percentageToGoal;
-//    }
-
     /**
      * creates a history that is used exclusively by the history database
      * @param id

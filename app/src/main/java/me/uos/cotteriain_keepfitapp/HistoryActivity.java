@@ -41,6 +41,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     private HistoryAdapter historyAdapter;
     private HistoryAdapter.HistoryClickListener hCl = this;
 
+    /**
+     * gets current Date and RecyclerView to display to user
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,11 +61,17 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView = (RecyclerView)findViewById(R.id.history_list);
         recyclerView.setLayoutManager(layoutManager);
-        historyAdapter = new HistoryAdapter(hCl, sharedData.getBool(getString(R.string.setting_history_editable), getResources().getBoolean(R.bool.default_history_editable)));
+
+        boolean isHistoryRecordable = sharedData.getBool(getString(R.string.setting_history_editable), getResources().getBoolean(R.bool.default_history_editable));
+        historyAdapter = new HistoryAdapter(hCl, isHistoryRecordable);
 
         setupViewModel();
     }
 
+    /**
+     * onResume resets whether goals editable in RecyclerView - i.e. allow user to select edit if allowed in settings
+     * - since there can only be single instance of this activity running then necessary to use onResume after returning from settings screen
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -69,6 +79,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         historyAdapter.setEditable(isHistoryEditable);
     }
 
+    /**
+     * If observed change to LiveData of list of history items in database then change views in Adapter
+     */
     private void setupViewModel(){
         ViewModelProvider.AndroidViewModelFactory viewModelFactory = new ViewModelProvider.AndroidViewModelFactory(getApplication());
         HistoryViewModel viewModel = new ViewModelProvider(this, viewModelFactory).get(HistoryViewModel.class);
@@ -81,6 +94,11 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         });
     }
 
+    /**
+     * AlertDialog to edit history element appears when edit icon pressed
+     * - set all fields with history data and if no mistakes in input then edit history item in database
+     * @param historyData
+     */
     private void editHistoryItem(HistoryData historyData){
         View popupLayout = getLayoutInflater().inflate(R.layout.history_popup, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -132,16 +150,24 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         });
     }
 
+    /**
+     * creates menu in toolbar
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) { getMenuInflater().inflate(R.menu.toolbar, menu);return true; }
 
+    /**
+     * @param item - item id used to determine which activity to load
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemID = item.getItemId();
         Intent intent = null;
         switch(itemID){
             case R.id.activity:
-//                finish();
                 intent = new Intent(this, MainActivity.class);
                 break;
             case R.id.history:

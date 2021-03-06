@@ -24,9 +24,14 @@ public class SettingsActivity extends AppCompatActivity {
     private Button clearHistoryButton;
 
     private HistoryDatabase historyDatabase;
-
     private SharedData sharedData;
 
+    /**
+     * sets Switches in UI with settings that user currently has enabled/disabled from SharedPreferences
+     * - when change in switch the sharedPreferences id updated
+     * - clear history button open dialog if clicked
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +68,9 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * AlertDialog generated and if click confirmation of deletion of all history database the historyDatabase has it history items cleared
+     */
     private void clearHistory() {
         View popupLayout = getLayoutInflater().inflate(R.layout.clear_popup, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -85,6 +93,11 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * creates menu in toolbar, and changes properties to allow only filled in settings icon top appear
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
@@ -98,6 +111,10 @@ public class SettingsActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * @param item - item id used to determine that settings icon pressed then takes user back to previous activity
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemID = item.getItemId();

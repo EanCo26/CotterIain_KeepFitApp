@@ -39,7 +39,11 @@ public class MyNotification {
         historyNotification(context);
     }
 
-
+    /**
+     * Builds Progress Notification and displays to user
+     * @param context
+     * @param msg - specific to this notification passes in percentage of goal progression
+     */
     private static void progressNotification(Context context, String msg){
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -54,6 +58,10 @@ public class MyNotification {
         notificationManager.notify(PROGRESS_ID, nb.build());
     }
 
+    /**
+     * Builds History Notification and displays to user
+     * @param context
+     */
     private static void historyNotification(Context context){
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -69,11 +77,11 @@ public class MyNotification {
     }
 
     /**
-     * Abstraction for creating the Builder to be used in both forms of notification
+     * Abstraction for creating the Builder to be used in both types of notification
      * @param context
      * @param msg
      * @param channel
-     * @param activityClass
+     * @param activityClass - allows the intent to have activity to open passed to it depending on type of notification
      * @return
      */
     private static NotificationCompat.Builder notificationBuilder(Context context, String msg, String channel, Class<? extends Activity> activityClass){

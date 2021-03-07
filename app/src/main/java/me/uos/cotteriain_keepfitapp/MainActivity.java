@@ -20,10 +20,13 @@ import me.uos.cotteriain_keepfitapp.History.HistoryData;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,14 +43,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalClickListener {
+public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private final String TAG = "MyTag/" + this.getClass().getSimpleName();
 
     private DateSystem dateSystem;
     private SharedData sharedData;
+    private SharedPreferences settingsPref;
     private GoalDatabase goalDatabase;
     private HistoryDatabase historyDatabase;
+
+    private boolean isGoalEditable, displayNotifications;
 
     private RecyclerView recyclerView;
     private GoalAdapter goalAdapter;
@@ -78,15 +84,10 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         setStepsEdit();
     }
 
-    /**
-     * onResume resets whether goals editable in RecyclerView - i.e. allow user to select edit if allowed in settings
-     * - since there can only be single instance of this activity running then necessary to use onResume after returning from settings screen
-     */
     @Override
-    protected void onResume() {
-        super.onResume();
-        boolean isGoalsEditable = sharedData.getBool(getString(R.string.setting_goals_editable), getResources().getBoolean(R.bool.default_goal_editable));
-        goalAdapter.setEditable(isGoalsEditable);
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 
     /**
@@ -94,9 +95,15 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
      */
     private void setPersistentData(){
         sharedData = new SharedData(this.getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE));
+        settingsPref = PreferenceManager.getDefaultSharedPreferences(this);
+        settingsPref.registerOnSharedPreferenceChangeListener(this);
+        isGoalEditable = settingsPref.getBoolean(getString(R.string.setting_goals_editable), getResources().getBoolean(R.bool.default_goal_editable));
+        displayNotifications = settingsPref.getBoolean(getString(R.string.setting_notifications), getResources().getBoolean(R.bool.default_notification));
+
         Date calendar = Calendar.getInstance().getTime();
         dateSystem = new DateSystem(new SimpleDateFormat("dd/MM/yyyy").format(calendar),
                 sharedData.getString(getString(R.string.activity_date), getString(R.string.activity_date)));
+
         goalDatabase = GoalDatabase.getsInstance(getApplicationContext());
         historyDatabase = HistoryDatabase.getsInstance(getApplicationContext());
     }
@@ -129,8 +136,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
      * - depending on phone orientation then layout will make scrolling horizontal or vertical
      */
     private void setRecyclerView(){
-        boolean isGoalsEditable = sharedData.getBool(getString(R.string.setting_goals_editable), getResources().getBoolean(R.bool.default_goal_editable));
-        goalAdapter = new GoalAdapter(gCL, isGoalsEditable);
+        goalAdapter = new GoalAdapter(gCL, isGoalEditable);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -233,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
             int percent = steps * 100 / goalSteps;
             HistoryData newHistoryData = new HistoryData(dateSystem.getOldDate(), goalName, steps, goalSteps, percent);
 
-            if (sharedData.getBool(getString(R.string.setting_notifications), getResources().getBoolean(R.bool.default_notification)))
+            if (displayNotifications)
                 new MyNotification(this);
 
             MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
@@ -282,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                     sharedData.setInt(getString(R.string.progress_achieved),  progressAchieved);
                 }
 
-                if (update && sharedData.getBool(getString(R.string.setting_notifications), getResources().getBoolean(R.bool.default_notification)))
+                if (update && displayNotifications)
                     new MyNotification(this, "You have achieved " + percent + "% of your goal");
             }
 
@@ -456,4 +462,21 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
     public void onEditClick(GoalData goal) { goalPopup(goal); }
     @Override
     public void onDeleteClick(GoalData goal) { deleteGoalPopup(goal); }
+
+    /**
+     * if change occurs in preference fragment of settings activity
+     * @param sharedPreferences
+     * @param key - the setting to evaluate if allowed
+     */
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals(getString(R.string.setting_goals_editable))){
+            isGoalEditable = sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.default_goal_editable));
+            goalAdapter.setEditable(isGoalEditable);
+        }
+        if(key.equals(getString(R.string.setting_notifications))){
+            displayNotifications = sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.default_notification));
+            goalAdapter.setEditable(displayNotifications);
+        }
+    }
 }

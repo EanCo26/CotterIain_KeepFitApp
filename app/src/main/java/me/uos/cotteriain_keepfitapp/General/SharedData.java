@@ -9,6 +9,7 @@ public class SharedData {
 
     /**
      * Activities access this to save or load to internal storage
+     * - any stored data that is not connected to settings - i.e. active goal id, num of steps and date
      * @param sharedPref
      */
     public SharedData(SharedPreferences sharedPref) {
@@ -18,7 +19,6 @@ public class SharedData {
 
     public int getInt(String key, int defaultValue){ return sharedPref.getInt(key, defaultValue); }
     public String getString(String key, String defaultValue){ return sharedPref.getString(key, defaultValue); }
-    public Boolean getBool(String key, boolean defaultValue){ return sharedPref.getBoolean(key, defaultValue); }
 
     public void setInt(String key, int value){
         editor.putInt(key, value);
@@ -26,10 +26,6 @@ public class SharedData {
     }
     public void setString(String key, String value){
         editor.putString(key, value);
-        editor.apply();
-    }
-    public void setBool(String key, boolean value){
-        editor.putBoolean(key, value);
         editor.apply();
     }
 }

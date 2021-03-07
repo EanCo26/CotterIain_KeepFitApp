@@ -17,8 +17,8 @@
     <string name="setting_goals_editable" translatable="false">me.uos.cotteriain_keepfitapp.GoalsEditable</string>
     <bool name="default_goal_editable">true</bool>
 
-    <string name="setting_history_editable" translatable="false">me.uos.cotteriain_keepfitapp.HistoryEditable</string>
-    <bool name="default_history_editable">true</bool>
+    <string name="setting_history_recordable" translatable="false">me.uos.cotteriain_keepfitapp.HistoryRecordable</string>
+    <bool name="default_history_recordable">true</bool>
 
     <string name="setting_notifications" translatable="false">me.uos.cotteriain_keepfitapp.NotificationsAllowed</string>
     <bool name="default_notification">true</bool>

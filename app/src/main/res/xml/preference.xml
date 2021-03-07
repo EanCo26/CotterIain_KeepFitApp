@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:defaultValue="@bool/default_notification"
+        android:key="@string/setting_notifications"
+        android:title="Push Notifications"
+        android:summaryOff="Notifications not Displayed"
+        android:summaryOn="Notifications Displayed"/>
+    <CheckBoxPreference
+        android:defaultValue="@bool/default_goal_editable"
+        android:key="@string/setting_goals_editable"
+        android:title="Goals Editable"
+        android:summaryOff="Cannot Edit Goals"
+        android:summaryOn="Can Edit Goals" />
+    <CheckBoxPreference
+        android:defaultValue="@bool/default_history_recordable"
+        android:key="@string/setting_history_recordable"
+        android:title="Allow History Recording"
+        android:summaryOff="Cannot Record to History"
+        android:summaryOn="Can Record to History" />
+</PreferenceScreen>

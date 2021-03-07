@@ -1,8 +1,9 @@
 package me.uos.cotteriain_keepfitapp;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,17 +26,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import me.uos.cotteriain_keepfitapp.Database.HistoryDatabase;
 import me.uos.cotteriain_keepfitapp.General.MyExecutor;
-import me.uos.cotteriain_keepfitapp.General.SharedData;
 import me.uos.cotteriain_keepfitapp.History.HistoryAdapter;
 import me.uos.cotteriain_keepfitapp.History.HistoryData;
 import me.uos.cotteriain_keepfitapp.History.HistoryViewModel;
 
-public class HistoryActivity extends AppCompatActivity implements HistoryAdapter.HistoryClickListener {
+public class HistoryActivity extends AppCompatActivity implements HistoryAdapter.HistoryClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private final String TAG = "MyTag/" + SettingsActivity.class.getSimpleName();
 
-    private SharedData sharedData;
+    private SharedPreferences settingsPref;
     private HistoryDatabase historyDatabase;
+
+    private boolean isHistoryRecordable;
 
     private RecyclerView recyclerView;
     private HistoryAdapter historyAdapter;
@@ -50,7 +52,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        sharedData = new SharedData(this.getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE));
+        settingsPref = PreferenceManager.getDefaultSharedPreferences(this);
+        settingsPref.registerOnSharedPreferenceChangeListener(this);
+
         historyDatabase = HistoryDatabase.getsInstance(getApplicationContext());
 
         TextView dateText = (TextView)findViewById(R.id.date);
@@ -62,21 +66,11 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         recyclerView = (RecyclerView)findViewById(R.id.history_list);
         recyclerView.setLayoutManager(layoutManager);
 
-        boolean isHistoryRecordable = sharedData.getBool(getString(R.string.setting_history_editable), getResources().getBoolean(R.bool.default_history_editable));
+        isHistoryRecordable = settingsPref.getBoolean(getString(R.string.setting_history_recordable),
+                getResources().getBoolean(R.bool.default_history_recordable));
         historyAdapter = new HistoryAdapter(hCl, isHistoryRecordable);
 
         setupViewModel();
-    }
-
-    /**
-     * onResume resets whether goals editable in RecyclerView - i.e. allow user to select edit if allowed in settings
-     * - since there can only be single instance of this activity running then necessary to use onResume after returning from settings screen
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        boolean isHistoryEditable = sharedData.getBool(getString(R.string.setting_history_editable), getResources().getBoolean(R.bool.default_history_editable));
-        historyAdapter.setEditable(isHistoryEditable);
     }
 
     /**
@@ -187,4 +181,17 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
     @Override
     public void onHistoryClick(HistoryData historyData) { editHistoryItem(historyData); }
+
+    /**
+     * if change occurs in preference fragment of settings activity
+     * @param sharedPreferences
+     * @param key - the setting to evaluate if allowed
+     */
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals(getString(R.string.setting_history_recordable))){
+            isHistoryRecordable = sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.default_history_recordable));
+            historyAdapter.setEditable(isHistoryRecordable);
+        }
+    }
 }

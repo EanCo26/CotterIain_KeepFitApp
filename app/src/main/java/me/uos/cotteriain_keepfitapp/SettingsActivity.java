@@ -20,11 +20,9 @@ public class SettingsActivity extends AppCompatActivity {
 
     private final String TAG = "My/" + SettingsActivity.class.getSimpleName();
 
-    private Switch notificationSetting, goalSetting, historySetting;
     private Button clearHistoryButton;
 
     private HistoryDatabase historyDatabase;
-    private SharedData sharedData;
 
     /**
      * sets Switches in UI with settings that user currently has enabled/disabled from SharedPreferences
@@ -38,28 +36,6 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         historyDatabase = HistoryDatabase.getsInstance(getApplicationContext());
-        sharedData = new SharedData(this.getSharedPreferences(getString(R.string.pref_file_key), Context.MODE_PRIVATE));
-
-        notificationSetting = (Switch)findViewById(R.id.notification_setting);
-        notificationSetting.setChecked(sharedData.getBool(getString(R.string.setting_notifications), getResources().getBoolean(R.bool.default_notification)));
-        notificationSetting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { sharedData.setBool(getString(R.string.setting_notifications), isChecked); }
-        });
-
-        goalSetting = (Switch)findViewById(R.id.goals_setting);
-        goalSetting.setChecked(sharedData.getBool(getString(R.string.setting_goals_editable), getResources().getBoolean(R.bool.default_goal_editable)));
-        goalSetting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { sharedData.setBool(getString(R.string.setting_goals_editable), isChecked); }
-        });
-
-        historySetting = (Switch)findViewById(R.id.history_rec_setting);
-        historySetting.setChecked(sharedData.getBool(getString(R.string.setting_history_editable), getResources().getBoolean(R.bool.default_history_editable)));
-        historySetting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { sharedData.setBool(getString(R.string.setting_history_editable), isChecked); }
-        });
 
         clearHistoryButton = (Button)findViewById(R.id.clear_history_button);
         clearHistoryButton.setOnClickListener(new View.OnClickListener() {

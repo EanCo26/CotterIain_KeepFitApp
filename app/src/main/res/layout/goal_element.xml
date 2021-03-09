@@ -9,9 +9,8 @@
 
     <TextView
         android:id="@+id/goal_name"
-        style="@style/ElementText"
+        style="@style/Text"
         android:layout_width="0dp"
-        android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/delete"

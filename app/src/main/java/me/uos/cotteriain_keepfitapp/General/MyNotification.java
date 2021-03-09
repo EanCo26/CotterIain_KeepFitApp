@@ -87,7 +87,7 @@ public class MyNotification {
     private static NotificationCompat.Builder notificationBuilder(Context context, String msg, String channel, Class<? extends Activity> activityClass){
         return new NotificationCompat.Builder(context, channel)
                 .setAutoCancel(true)
-                .setColor(ContextCompat.getColor(context, R.color.red))
+                .setColor(ContextCompat.getColor(context, R.color.primary))
                 .setSmallIcon(R.drawable.activity_icon)
                 .setContentTitle("Keep Fit")
                 .setContentText(msg)

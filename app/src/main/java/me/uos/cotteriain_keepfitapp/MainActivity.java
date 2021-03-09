@@ -257,6 +257,8 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
      */
     private int resetActiveGoalData(){
         activeGoal = null;
+        stepsEdit.setText("0");
+
         dateSystem.setOldDate(dateSystem.getCurrentDate());
         sharedData.setString(getString(R.string.activity_date), dateSystem.getCurrentDate());
         sharedData.setInt(getString(R.string.current_steps), getResources().getInteger(R.integer.default_steps));

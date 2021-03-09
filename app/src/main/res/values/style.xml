@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/red</item>
-        <item name="colorPrimaryDark">@color/dark_red</item>
-        <item name="colorAccent">@color/red</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white</item>
@@ -32,11 +32,18 @@
         <item name="android:textSize">40sp</item>
     </style>
     <style name="ElementText" parent="Text">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">16sp</item>
     </style>
     <style name="DialogText" parent="Text">
-        <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="summaryTextStyle" parent="Text">
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="Button" parent="Text">
+        <item name="backgroundTint">@color/accent</item>
     </style>
 
     <style name="ProgressBarStyle">
@@ -49,7 +56,7 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:imeOptions">actionDone</item>
         <item name="android:cursorVisible">false</item>
-        <item name="backgroundTint">@color/red</item>
+        <item name="backgroundTint">@color/accent</item>
     </style>
     <style name="EditTextNumber" parent="EditTextStyle">
         <item name="android:inputType">number</item>
@@ -57,9 +64,5 @@
     </style>
     <style name="EditTextString" parent="EditTextStyle">
         <item name="android:maxLength">@integer/name_character_limit</item>
-    </style>
-
-    <style name="SwitchStyle" parent="StandardView">
-        <item name="android:checked">true</item>
     </style>
 </resources>

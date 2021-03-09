@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="24sp"
-        android:text="Edit History"/>
+        android:text="Record to History"/>
 
     <TextView
         android:id="@+id/name"
@@ -86,10 +86,9 @@
 
     <Button
         android:id="@+id/edit_button"
-        style="@style/Text"
+        style="@style/Button"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_goal_steps"

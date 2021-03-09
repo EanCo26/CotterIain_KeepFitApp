@@ -12,17 +12,17 @@
         android:id="@+id/date"
         android:layout_margin="8dp"
         style="@style/ElementText"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="19/02/2021"/>
+        tools:text="19/02/2021"/>
 
     <TextView
         android:id="@+id/name"
         style="@style/Text"
         android:layout_width="0dp"
         android:layout_margin="8dp"
-        android:text="The Goal Name"
+        tools:text="The Goal Name"
         android:textAlignment="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/steps"

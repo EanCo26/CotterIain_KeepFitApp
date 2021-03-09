@@ -16,10 +16,9 @@
 
     <Button
         android:id="@+id/yes"
-        style="@style/Text"
+        style="@style/Button"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/red"
         android:text="Confirm"
         app:layout_constraintTop_toBottomOf="@+id/title"
         app:layout_constraintStart_toStartOf="parent"

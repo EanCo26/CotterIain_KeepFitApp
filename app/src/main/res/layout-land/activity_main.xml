@@ -28,7 +28,7 @@
         android:id="@+id/divider"
         android:layout_width="200dp"
         android:layout_height="2dp"
-        android:background="@color/activity"
+        android:background="@color/accent"
         app:layout_constraintBottom_toBottomOf="@+id/progress"
         app:layout_constraintEnd_toEndOf="@id/goal_number"
         app:layout_constraintStart_toStartOf="@id/goal_number"

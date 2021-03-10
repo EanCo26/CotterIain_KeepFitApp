@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
                     goalNames.add(goal.getName());
                     if(goal.getId() == id)
                         activeGoal = goal;
+                    Log.d(TAG, "onChanged: " + goal.getId());
                 }
 
                 /**
@@ -236,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
             String goalName = activeGoal.getName();
             steps = sharedData.getInt(getString(R.string.current_steps), getResources().getInteger(R.integer.default_steps));
             int goalSteps = activeGoal.getSteps();
-            int percent = steps * 100 / goalSteps;
+            int percent = goalSteps > 0 ? steps * 100 / goalSteps : 0;
             HistoryData newHistoryData = new HistoryData(dateSystem.getOldDate(), goalName, steps, goalSteps, percent);
 
             if (displayNotifications)
@@ -275,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements GoalAdapter.GoalC
         if(activeGoal != null) {
             steps = sharedData.getInt(getString(R.string.current_steps), getResources().getInteger(R.integer.default_steps));
             int goalSteps = activeGoal.getSteps();
-            int percent = steps * 100 / goalSteps;
+            int percent = goalSteps > 0 ? steps * 100 / goalSteps : 0;
 
             if(isNotified) {
                 int progressAchieved = sharedData.getInt(getString(R.string.progress_achieved),  getResources().getInteger(R.integer.default_progress));

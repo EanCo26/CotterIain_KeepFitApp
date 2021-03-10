@@ -74,7 +74,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView goalNameText, dateText, stepsTakenText, goalStepsText;
+        private TextView goalNameText, dateText, stepsTakenText, goalStepsText, percentageText;
         private ProgressBar progressBar;
         private ImageView editIcon;
         private HistoryData historyData;
@@ -90,6 +90,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             dateText = (TextView)itemView.findViewById(R.id.date);
             stepsTakenText = (TextView)itemView.findViewById(R.id.steps_num);
             goalStepsText = (TextView)itemView.findViewById(R.id.goal_steps_num);
+            percentageText = (TextView)itemView.findViewById(R.id.goal_percentage);
+
             progressBar = (ProgressBar) itemView.findViewById(R.id.completion_bar);
             progressBar.setProgress(0);
 
@@ -110,6 +112,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             dateText.setText(historyData.getDate());
             stepsTakenText.setText(Integer.toString(historyData.getStepsTaken()));
             goalStepsText.setText(Integer.toString(historyData.getGoalSteps()));
+            percentageText.setText(Integer.toString(historyData.getPercentageToGoal())+"%");
+
             progressBar.setProgress(historyData.getPercentageToGoal());
             editIcon.setVisibility(editable ? View.VISIBLE : View.INVISIBLE);
         }

@@ -34,43 +34,52 @@
         style="@style/ElementText"
         android:text="Steps: "
         android:textAlignment="textStart"
-        app:layout_constraintEnd_toStartOf="@+id/completion_bar"
+        app:layout_constraintBottom_toTopOf="@+id/goal_steps"
+        app:layout_constraintEnd_toStartOf="@+id/goal_percentage"
         app:layout_constraintStart_toEndOf="@+id/date"
-        app:layout_constraintTop_toBottomOf="@id/date" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/goal_steps"
         style="@style/ElementText"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:text="Goal: "
         android:textAlignment="textStart"
-        app:layout_constraintStart_toStartOf="@+id/steps"
-        app:layout_constraintTop_toBottomOf="@id/steps" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/steps" />
 
     <TextView
         android:id="@+id/steps_num"
         style="@style/ElementText"
         app:layout_constraintStart_toEndOf="@id/steps"
         app:layout_constraintTop_toTopOf="@id/steps"
-        tools:text="7500" />
+        tools:text="1234567" />
 
     <TextView
         android:id="@+id/goal_steps_num"
         style="@style/ElementText"
         app:layout_constraintStart_toEndOf="@id/steps"
         app:layout_constraintTop_toTopOf="@id/goal_steps"
-        tools:text="10000" />
+        tools:text="1234567" />
+
+    <TextView
+        android:id="@+id/goal_percentage"
+        style="@style/ElementText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/completion_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="100%" />
 
     <ProgressBar
         android:id="@+id/completion_bar"
+        style="@style/ProgressBarStyle"
         android:layout_width="60dp"
         android:layout_height="0dp"
-        android:layout_margin="4dp"
-        style="@style/ProgressBarStyle"
-        app:layout_constraintEnd_toStartOf="@id/edit"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:progress="75"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:progress="75" />
 
     <ImageView
         android:id="@+id/edit"

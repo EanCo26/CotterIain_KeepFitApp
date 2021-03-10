@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,6 +45,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     private HistoryAdapter historyAdapter;
     private HistoryAdapter.HistoryClickListener hCl = this;
 
+    private FloatingActionButton floatingActionButton;
+
     /**
      * gets current Date and RecyclerView to display to user
      * @param savedInstanceState
@@ -59,7 +63,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
         TextView dateText = (TextView)findViewById(R.id.date);
         Date calendar = Calendar.getInstance().getTime();
-        dateText.setText(new SimpleDateFormat("dd/MM/yyyy").format(calendar));
+        String date = new SimpleDateFormat("dd/MM/yyyy").format(calendar);
+        dateText.setText(date);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -69,6 +74,19 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         isHistoryRecordable = settingsPref.getBoolean(getString(R.string.setting_history_recordable),
                 getResources().getBoolean(R.bool.default_history_recordable));
         historyAdapter = new HistoryAdapter(hCl, isHistoryRecordable);
+
+        floatingActionButton = (FloatingActionButton)findViewById(R.id.add_history);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
+                    @Override
+                    public void run() { historyDatabase.historyDAO().createHistory(new HistoryData(date, "New", 0, 0, 0)); }
+                });
+            }
+        });
+        if(!isHistoryRecordable)
+            floatingActionButton.setVisibility(View.INVISIBLE);
 
         setupViewModel();
     }
@@ -103,11 +121,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         EditText name_field = (EditText)popupLayout.findViewById(R.id.edit_name);
         name_field.setText(historyData.getGoalName());
 
-        EditText steps_field = (EditText)popupLayout.findViewById(R.id.edit_steps);
-        steps_field.setText(Integer.toString(historyData.getStepsTaken()));
-
         EditText goal_steps_field = (EditText)popupLayout.findViewById(R.id.edit_goal_steps);
         goal_steps_field.setText(Integer.toString(historyData.getGoalSteps()));
+
+        EditText steps_field = (EditText)popupLayout.findViewById(R.id.edit_steps);
 
         Button edit_button = (Button)popupLayout.findViewById(R.id.edit_button);
         edit_button.setOnClickListener(new View.OnClickListener() {
@@ -120,19 +137,20 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
                 String none = "Requires Input";
                 if(nameText.isEmpty())
                     name_field.setError(none);
-                if(stepsText.isEmpty())
-                    steps_field.setError(none);
                 if(goalStepsText.isEmpty())
                     goal_steps_field.setError(none);
-                if(nameText.isEmpty() || stepsText.isEmpty() || goalStepsText.isEmpty())
+                if(nameText.isEmpty() || goalStepsText.isEmpty())
                     return;
 
-                int iSteps = Integer.parseInt(stepsText),
-                        iGoalSteps = Integer.parseInt(goalStepsText);
+                int stepsTaken = historyData.getStepsTaken();
+                if(!stepsText.isEmpty()){
+                    stepsTaken += Integer.parseInt(stepsText);
+                }
+                int goalSteps = Integer.parseInt(goalStepsText);
                 historyData.setGoalName(nameText);
-                historyData.setStepsTaken(iSteps);
-                historyData.setGoalSteps(iGoalSteps);
-                int percent = iSteps * 100 / iGoalSteps;
+                historyData.setStepsTaken(stepsTaken);
+                historyData.setGoalSteps(goalSteps);
+                int percent = goalSteps > 0 ? stepsTaken * 100 / goalSteps : 0;
                 historyData.setPercentageToGoal(percent);
 
                 MyExecutor.getInstance().getDiskIO().execute(new Runnable() {
@@ -192,6 +210,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         if(key.equals(getString(R.string.setting_history_recordable))){
             isHistoryRecordable = sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.default_history_recordable));
             historyAdapter.setEditable(isHistoryRecordable);
+            if(!isHistoryRecordable)
+                floatingActionButton.setVisibility(View.INVISIBLE);
+            else
+                floatingActionButton.setVisibility(View.VISIBLE);
         }
     }
 }

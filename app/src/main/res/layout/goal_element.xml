@@ -41,16 +41,16 @@
     <TextView
         android:id="@+id/textView"
         style="@style/ElementText"
-        android:layout_marginBottom="16dp"
         android:text="Goal:"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/goal_name" />
 
     <TextView
         android:id="@+id/goal_steps"
-        android:layout_marginStart="4dp"
         style="@style/ElementText"
-        tools:text="1234000"
+        android:layout_marginStart="4dp"
+        tools:text="1234567"
         app:layout_constraintTop_toTopOf="@+id/textView"
         app:layout_constraintStart_toEndOf="@id/textView"/>
 
